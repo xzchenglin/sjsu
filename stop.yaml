@@ -1,0 +1,13 @@
+---
+
+- hosts: test
+  gather_facts: false
+
+  tasks:
+    - name: "Stop node.js"
+      command: "forever stop {{rootDir}}/{{projDir}}/server.js"
+
+    - name: "Clean up"
+      file:
+       state: absent
+       path: "{{rootDir}}/{{projDir}}"
