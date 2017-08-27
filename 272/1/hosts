@@ -1,0 +1,10 @@
+[test]
+54.159.130.59
+
+[self]
+34.207.219.49
+
+[test:vars]
+rootDir=/root/272
+projDir=1-ansible
+nodeVer=node-v4.2.1-linux-x64
