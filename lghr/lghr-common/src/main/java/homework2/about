@@ -1,6 +1,6 @@
 This service will pull Twitter contents and put them to local file system.
 
-Supported twitter APIs and their destibnation folders:
+Supported twitter APIs and their destination folders:
 
 timeline -> /lghr/camel_d/timeline
 search -> /lghr/camel_d/search
