@@ -13,7 +13,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Lin on 2017/9/25.
+ * Created by Lin Cheng on 2017/9/25.
+ *
+ This service will pull Twitter contents and put them to local file system.
+
+ Supported twitter APIs and their destination folders:
+
+ timeline -> /lghr/camel_d/timeline
+ search -> /lghr/camel_d/search
+ directmessage -> /lghr/camel_d/directmessage
+
+ APIs exposed:
+
+ TwitterService.start -> start service and keep pulling default contents
+ TwitterService.stop -> stop service
+ TwitterService.setKeyword -> change search keyword
+ TwitterService.setTimeline -> change to different people's timeline
  */
 public class TwitterService extends CamelService {
 

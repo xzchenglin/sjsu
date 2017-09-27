@@ -5,7 +5,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
 /**
- * Created by Lin on 2017/9/17.
+ * Created by Lin Cheng on 2017/9/17.
  */
 public abstract class CamelService {
 
