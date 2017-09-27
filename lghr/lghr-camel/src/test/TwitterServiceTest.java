@@ -8,6 +8,9 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 
+/***
+ * Created by Lin Cheng on 2017/9/25.
+ */
 public class TwitterServiceTest {
 
     TwitterService service = TwitterService.instance();

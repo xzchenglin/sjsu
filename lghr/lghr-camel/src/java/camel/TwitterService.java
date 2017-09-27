@@ -45,6 +45,11 @@ public class TwitterService extends CamelService {
     static public String msgRouteId = "msgRoute";
     static public String timelineRouteId = "timelineRoute";
 
+    static public String rootDir = "/lghr/camel_d/";
+    static public String searchDir = "search";
+    static public String msgDir = "directmessage";
+    static public String timelineDir = "timeline";
+
     static TwitterService twitterService = new TwitterService();
 
     private TwitterService() {
@@ -86,74 +91,32 @@ public class TwitterService extends CamelService {
     }
 
     private void addTimelineRoute() throws Exception{
-        addRoute(new RouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                from("twitter://timeline/user?type=direct&user=" + timeline +
-                        "&consumerKey=" + consumerKey +
-                        "&consumerSecret=" + consumerSecret +
-                        "&accessToken=" + accessToken +
-                        "&accessTokenSecret=" + accessTokenSecret)
-                        .routeId(timelineRouteId)
-                        .process(new TwitterProcessor())
-                        .to("file:/lghr/camel_d/timeline");
-            }
-        });
-
+        addTwitterRoute("timeline/user?type=direct&user=" + timeline, timelineDir, timelineRouteId);
     }
 
     private void addSearchRoute() throws Exception{
-        addRoute(new RouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                from("twitter://search?type=polling&keywords=" + keyword +
-                        "&consumerKey=" + consumerKey +
-                        "&consumerSecret=" + consumerSecret +
-                        "&accessToken=" + accessToken +
-                        "&accessTokenSecret=" + accessTokenSecret)
-                        .routeId(searchRouteId)
-                        .process(new TwitterProcessor())
-                        .process(new PrintProcessor())
-                        .to("file:/lghr/camel_d/search");
-            }
-        });
+        addTwitterRoute("search?type=polling&keywords=" + keyword, searchDir, searchRouteId);
     }
 
     private void addMsgRoute() throws Exception{
+        addTwitterRoute("directmessage?type=polling&delay=10000", msgDir, msgRouteId);
+    }
+
+    private void addTwitterRoute(String uri, String path, String id) throws Exception{
         addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                from("twitter://directmessage?type=polling&delay=10000" +
+                from("twitter://" + uri +
                         "&consumerKey=" + consumerKey +
                         "&consumerSecret=" + consumerSecret +
                         "&accessToken=" + accessToken +
                         "&accessTokenSecret=" + accessTokenSecret)
-                        .routeId(msgRouteId)
+                        .routeId(id)
                         .process(new TwitterProcessor())
-                        .to("file:/lghr/camel_d/directmessage");
+                        .process(new PrintProcessor())
+                        .to("file:" + rootDir + path);
             }
         });
-
-    }
-
-    static class FileBeanTransformProcessor implements Processor {
-        public void process(Exchange exchange) throws Exception {
-            InputStream body = exchange.getIn().getBody(InputStream.class);
-            BufferedReader in = new BufferedReader(new InputStreamReader(body));
-            StringBuffer strbf = new StringBuffer("");
-            String str = null;
-            str = in.readLine();
-            while (str != null) {
-                String[] strs = str.split("@");
-                for (String s : strs) {
-                    strbf.append(s + "@x@");
-                }
-                str = in.readLine();
-            }
-
-            exchange.getOut().setHeader(Exchange.FILE_NAME, exchange.getIn().getHeader(Exchange.FILE_NAME));
-            exchange.getOut().setBody(strbf.toString());
-        }
     }
 
     static class PrintProcessor implements Processor{
@@ -182,25 +145,27 @@ public class TwitterService extends CamelService {
                 return;
             }
 
+            String name;
+            String content;
             if(obj instanceof Status) {
                 Status status = (Status)obj;
-                if (status != null) {
-                    exchange.getIn().setHeader(Exchange.FILE_NAME, status.getUser().getScreenName() + "-" + status.getCreatedAt().getTime() + ".txt");
-                    exchange.getIn().setBody(status.getText());
-                }
+                name = status.getUser().getScreenName() + "-" + status.getCreatedAt().getTime() + ".txt";
+                content = status.getText();
             } else if(obj instanceof List) {
                 List<Status> ss = (List<Status>)obj;
-                String s = ss.stream().map(o->o.getText()).collect(Collectors.joining("###"));
-                exchange.getIn().setHeader(Exchange.FILE_NAME, "List-"+ System.currentTimeMillis() + ".txt");
-                exchange.getIn().setBody(s);
+                name = "List-"+ System.currentTimeMillis() + ".txt";
+                content = ss.stream().map(o->o.getText()).collect(Collectors.joining("###"));
             } else if(obj instanceof DirectMessage){
                 DirectMessage msg = (DirectMessage)obj;
-                exchange.getIn().setHeader(Exchange.FILE_NAME, msg.getSender().getScreenName() + "-" + msg.getCreatedAt().getTime() + ".txt");
-                exchange.getIn().setBody(msg.getText());
+                name = msg.getSender().getScreenName() + "-" + msg.getCreatedAt().getTime() + ".txt";
+                content = msg.getText();
             } else {
-                exchange.getIn().setHeader(Exchange.FILE_NAME, "Unknown-"+ System.currentTimeMillis() + ".txt");
-                exchange.getIn().setBody(obj);
+                name = "Unknown-"+ System.currentTimeMillis() + ".txt";
+                content = obj + "";
             }
+
+            exchange.getIn().setHeader(Exchange.FILE_NAME, name);
+            exchange.getIn().setBody(content);
         }
     }
 }
