@@ -9,8 +9,8 @@ import org.apache.camel.impl.DefaultCamelContext;
  */
 public abstract class CamelService {
 
-    private static volatile boolean stop = false;
-    private static CamelContext camelContext = new DefaultCamelContext();
+    private volatile boolean stop = false;
+    private CamelContext camelContext = new DefaultCamelContext();
 
     public void start() throws Exception {
         addRoutes();

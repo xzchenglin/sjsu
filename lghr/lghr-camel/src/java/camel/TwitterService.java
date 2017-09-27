@@ -35,28 +35,28 @@ public class TwitterService extends CamelService {
     private String keyword = "camel";
     private String timeline = "BarackObama";
 
-    //TODO - read from config file
-    static String consumerKey = "dM32KAknIZZdNyskaQ2b0cHSm";
-    static String consumerSecret = "2HkU5dRd3UkUzaqlyxzRjZjZppTXaXhojg4KagZI7NQb4AdMTj";
-    static String accessToken = "42130867-xhH261CGI62un52HGm66Iks2Xlw7OYaJijm3ucwVG";
-    static String accessTokenSecret = "0TN0VWs6CFsYKFDHxKtZnmbIgaLMuIxI8Itl2vsHWyjwl";
+    private String consumerKey;
+    private String consumerSecret;
+    private String accessToken;
+    private String accessTokenSecret;
 
-    static public String searchRouteId = "searchRoute";
-    static public String msgRouteId = "msgRoute";
-    static public String timelineRouteId = "timelineRoute";
+    static private String searchRouteId = "searchRoute";
+    static private String msgRouteId = "msgRoute";
+    static private String timelineRouteId = "timelineRoute";
 
-    static public String rootDir = "/lghr/camel_d/";
-    static public String searchDir = "search";
-    static public String msgDir = "directmessage";
-    static public String timelineDir = "timeline";
+    private String rootDir = "/lghr/camel_d/";
+    private String searchDir = "search";
+    private String msgDir = "directmessage";
+    private String timelineDir = "timeline";
 
-    static TwitterService twitterService = new TwitterService();
-
-    private TwitterService() {
+    public TwitterService() {
     }
 
-    public static TwitterService instance(){
-        return twitterService;
+    public TwitterService(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
+        this.consumerKey = consumerKey;
+        this.consumerSecret = consumerSecret;
+        this.accessToken = accessToken;
+        this.accessTokenSecret = accessTokenSecret;
     }
 
     public String getKeyword() {
