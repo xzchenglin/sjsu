@@ -1,0 +1,16 @@
+This service will pull Twitter contents and put them to local file system.
+
+Supported twitter APIs and their destibnation folders:
+
+timeline -> /lghr/camel_d/timeline
+search -> /lghr/camel_d/search
+directmessage -> /lghr/camel_d/directmessage
+
+
+APIs exposed:
+
+TwitterService.start -> start service and keep pulling default contents
+TwitterService.stop -> stop serbice
+TwitterService.setKeyword -> change search keyword
+TwitterService.setTimeline -> change to different people's timeline
+ 
