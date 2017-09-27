@@ -1,6 +1,5 @@
-package main.java.homework2;
+package camel;
 
-import main.java.common.Camel;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -16,14 +15,14 @@ import java.util.stream.Collectors;
 /**
  * Created by Lin on 2017/9/25.
  */
-public class TwitterService {
+public class TwitterService extends CamelService {
 
     private String keyword = "camel";
     private String timeline = "BarackObama";
 
     //TODO - read from config file
-    static String consumerKey = "nbFXMPxD0UBHp4lw0Otw7w6BU";
-    static String consumerSecret = "bcP38jtDqxB1zHya5VzRkcnVJ5PhwST7AFvmhAN9V91VzZmKyk";
+    static String consumerKey = "dM32KAknIZZdNyskaQ2b0cHSm";
+    static String consumerSecret = "2HkU5dRd3UkUzaqlyxzRjZjZppTXaXhojg4KagZI7NQb4AdMTj";
     static String accessToken = "42130867-xhH261CGI62un52HGm66Iks2Xlw7OYaJijm3ucwVG";
     static String accessTokenSecret = "0TN0VWs6CFsYKFDHxKtZnmbIgaLMuIxI8Itl2vsHWyjwl";
 
@@ -31,7 +30,6 @@ public class TwitterService {
     static public String msgRouteId = "msgRoute";
     static public String timelineRouteId = "timelineRoute";
 
-    static Camel camel = Camel.instance();
     static TwitterService twitterService = new TwitterService();
 
     private TwitterService() {
@@ -65,11 +63,7 @@ public class TwitterService {
         addTimelineRoute();
     }
 
-    public void start() throws Exception {
-        addRoutes();
-        camel.start();
-    }
-
+    @Override
     public void addRoutes() throws Exception {
         addTimelineRoute();
         addSearchRoute();
@@ -77,7 +71,7 @@ public class TwitterService {
     }
 
     private void addTimelineRoute() throws Exception{
-        camel.addRoute(new RouteBuilder() {
+        addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
                 from("twitter://timeline/user?type=direct&user=" + timeline +
@@ -94,7 +88,7 @@ public class TwitterService {
     }
 
     private void addSearchRoute() throws Exception{
-        camel.addRoute(new RouteBuilder() {
+        addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
                 from("twitter://search?type=polling&keywords=" + keyword +
@@ -111,7 +105,7 @@ public class TwitterService {
     }
 
     private void addMsgRoute() throws Exception{
-        camel.addRoute(new RouteBuilder() {
+        addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
                 from("twitter://directmessage?type=polling&delay=10000" +
@@ -125,14 +119,6 @@ public class TwitterService {
             }
         });
 
-    }
-
-    public void stop(){
-        camel.stop();
-    }
-
-    public void removeRoute(String rid) throws Exception {
-        camel.removeRoute(rid);
     }
 
     static class FileBeanTransformProcessor implements Processor {
@@ -184,20 +170,20 @@ public class TwitterService {
             if(obj instanceof Status) {
                 Status status = (Status)obj;
                 if (status != null) {
-                    exchange.getIn().setHeader(Exchange.FILE_NAME, status.getUser().getScreenName() + ":" + status.getCreatedAt() + ".txt");
+                    exchange.getIn().setHeader(Exchange.FILE_NAME, status.getUser().getScreenName() + "-" + status.getCreatedAt().getTime() + ".txt");
                     exchange.getIn().setBody(status.getText());
                 }
             } else if(obj instanceof List) {
                 List<Status> ss = (List<Status>)obj;
                 String s = ss.stream().map(o->o.getText()).collect(Collectors.joining("###"));
-                exchange.getIn().setHeader(Exchange.FILE_NAME, "List:"+ System.currentTimeMillis() + ".txt");
+                exchange.getIn().setHeader(Exchange.FILE_NAME, "List-"+ System.currentTimeMillis() + ".txt");
                 exchange.getIn().setBody(s);
             } else if(obj instanceof DirectMessage){
                 DirectMessage msg = (DirectMessage)obj;
-                exchange.getIn().setHeader(Exchange.FILE_NAME, msg.getSender().getScreenName() + ":" + msg.getCreatedAt() + ".txt");
+                exchange.getIn().setHeader(Exchange.FILE_NAME, msg.getSender().getScreenName() + "-" + msg.getCreatedAt().getTime() + ".txt");
                 exchange.getIn().setBody(msg.getText());
             } else {
-                exchange.getIn().setHeader(Exchange.FILE_NAME, "Unknown:"+ System.currentTimeMillis() + ".txt");
+                exchange.getIn().setHeader(Exchange.FILE_NAME, "Unknown-"+ System.currentTimeMillis() + ".txt");
                 exchange.getIn().setBody(obj);
             }
         }

@@ -24,6 +24,7 @@
         </activation>
         <modules>
             <module>lghr-common</module>
+            <module>lghr-camel</module>
         </modules>
         <properties>
             <project>all</project>

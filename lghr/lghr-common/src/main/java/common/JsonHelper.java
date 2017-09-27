@@ -1,4 +1,4 @@
-package main.java.common;
+package common;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
