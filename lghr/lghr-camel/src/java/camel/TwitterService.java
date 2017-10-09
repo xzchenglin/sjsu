@@ -46,10 +46,11 @@ public class TwitterService extends CamelService {
     static private String msgRouteId = "msgRoute";
     static private String timelineRouteId = "timelineRoute";
 
-    private String rootDir = "/lghr/camel_d/";
-    private String searchDir = "search";
-    private String msgDir = "directmessage";
-    private String timelineDir = "timeline";
+    private static String rootDir = "/lghr/camel_d/";
+
+    private String searchUri = "search";
+    private String directmessageUri = "directmessage";
+    private String timelineUri = "timeline";
 
     static TwitterService instance = new TwitterService();
 
@@ -95,45 +96,63 @@ public class TwitterService extends CamelService {
 
     @Override
     public void addRoutes() throws Exception {
+
         addTimelineRoute();
-//        addSearchRoute();
-//        addMsgRoute();
+        addSearchRoute();
+        addMsgRoute();
+
+        //add REST endpoints
         addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
                 restConfiguration().component("restlet").host("localhost").port(8000).bindingMode(RestBindingMode.auto);
-                rest("/say")
-                        .get("/hello").to("direct:hello")
-                        .post("/post").to("direct:post")
-                        .get("/bye").to("direct:bye");
+                rest("/twitter")
+                        .get("/timeline").to("direct:timeline")
+                        .get("/msg").to("direct:msg")
+                        .get("/search").to("direct:search")
+                        .get("/testget").to("direct:testget")
+                        .post("/testpost").to("direct:testpost");
 
-                from("direct:hello")
-                        .transform().constant(readFile()).process(new PrintProcessor());
-                from("direct:post")
+                from("direct:timeline")
+                        .bean(TwitterService.class, "readFile('timeline')").process(new PrintProcessor());
+                from("direct:msg")
+                        .bean(TwitterService.class, "readFile('directmessage')").process(new PrintProcessor());
+                from("direct:search")
+                        .bean(TwitterService.class, "readFile('search')").process(new PrintProcessor());
+
+                from("direct:testget")
+                        .process(new GetProcessor());
+                from("direct:testpost")
                         .process(new PostProcessor());
-                from("direct:bye")
-                        .transform().constant("Bye World").process(new PrintProcessor());
             }
         });
     }
 
-    private String readFile() throws Exception {
-        return Utils.readRawContentFromFile(rootDir + timelineDir + "/" + timeline + ".txt");
+    public static String readFile(String filenName) {
+        try {
+            return Utils.readRawContentFromFile(rootDir + filenName + ".txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
 
     private void addTimelineRoute() throws Exception{
-        addTwitterRoute("timeline/user?type=direct&user=" + timeline, timelineDir, timelineRouteId);
+        addTwitterRoute(timelineUri +
+                "/user?type=direct&user=" + timeline, timelineRouteId);
     }
 
     private void addSearchRoute() throws Exception{
-        addTwitterRoute("search?type=polling&keywords=" + keyword, searchDir, searchRouteId);
+        addTwitterRoute(searchUri +
+                "?type=polling&keywords=" + keyword, searchRouteId);
     }
 
     private void addMsgRoute() throws Exception{
-        addTwitterRoute("directmessage?type=polling&delay=10000", msgDir, msgRouteId);
+        addTwitterRoute(directmessageUri +
+                "?type=polling&delay=10000", msgRouteId);
     }
 
-    private void addTwitterRoute(String uri, String path, String id) throws Exception{
+    private void addTwitterRoute(String uri, String id) throws Exception{
         addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
@@ -145,7 +164,7 @@ public class TwitterService extends CamelService {
                         .routeId(id)
                         .process(new TwitterProcessor())
                         .process(new PrintProcessor())
-                        .to("file:" + rootDir + path);
+                        .to("file:" + rootDir + "?fileExist=append&noop=true");
             }
         });
     }
@@ -171,16 +190,34 @@ public class TwitterService extends CamelService {
         @Override
         public void process(Exchange exchange) throws Exception {
             InputStream inputStream = exchange.getIn().getBody(InputStream.class);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = null;
-            while((line=bufferedReader.readLine())!=null){
-                System.out.println(line);
-            }
             try {
-                inputStream.close();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                String body = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    body += line + "\n";
+                }
+
+                //TODO twitter API calls and parsing
+
+                exchange.getOut().setBody("post response");
+
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                inputStream.close();
             }
+        }
+    }
+
+    static class GetProcessor implements Processor{
+        @Override
+        public void process(Exchange exchange) throws Exception {
+            String params = exchange.getIn().getHeader("CamelHttpQuery") + "";
+
+            //TODO twitter API calls and parsing
+
+            exchange.getOut().setBody("get response");
         }
     }
 
@@ -193,28 +230,25 @@ public class TwitterService extends CamelService {
                 return;
             }
 
-            String name;
+            String name = exchange.getFromEndpoint().getEndpointUri().toString().
+                    split("//")[1].split("[/?]")[0] + ".txt";
+
             String content;
             if(obj instanceof Status) {
                 Status status = (Status)obj;
-//                name = status.getUser().getScreenName() + "-" + status.getCreatedAt().getTime() + ".txt";
-                name = status.getUser().getScreenName() + ".txt";
                 content = status.getText();
             } else if(obj instanceof List) {
                 List<Status> ss = (List<Status>)obj;
-                name = "List-"+ System.currentTimeMillis() + ".txt";
                 content = ss.stream().map(o->o.getText()).collect(Collectors.joining("###"));
             } else if(obj instanceof DirectMessage){
                 DirectMessage msg = (DirectMessage)obj;
-                name = msg.getSender().getScreenName() + "-" + msg.getCreatedAt().getTime() + ".txt";
                 content = msg.getText();
             } else {
-                name = "Unknown-"+ System.currentTimeMillis() + ".txt";
                 content = obj + "";
             }
 
             exchange.getOut().setHeader(Exchange.FILE_NAME, name);
-            exchange.getOut().setBody(content);
+            exchange.getOut().setBody(content + "###");
         }
     }
 }

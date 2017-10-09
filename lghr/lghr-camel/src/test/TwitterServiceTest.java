@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TwitterServiceTest {
 
-    TwitterService service = new TwitterService("ShhfhdDDoHAJw0HzILuHi7IZg",
+    TwitterService service = TwitterService.instance("A3r6vuJNqxRxWy7vvQYKvN3zY",
             "AzNhDMJKs7xKNHV4sE58zfFpALLOOTfBi0dw2OStDrrxb9TBJ9",
             "42130867-xhH261CGI62un52HGm66Iks2Xlw7OYaJijm3ucwVG",
             "0TN0VWs6CFsYKFDHxKtZnmbIgaLMuIxI8Itl2vsHWyjwl");
