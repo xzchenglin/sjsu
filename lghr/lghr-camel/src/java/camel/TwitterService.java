@@ -149,7 +149,7 @@ public class TwitterService extends CamelService {
 
     private void addSearchRoute() throws Exception{
         addTwitterRoute(searchUri +
-                "?type=polling&keywords=" + keyword, searchRouteId);
+                "?type=polling&count=50&keywords=" + keyword, searchRouteId);
     }
 
     private void addMsgRoute() throws Exception{
