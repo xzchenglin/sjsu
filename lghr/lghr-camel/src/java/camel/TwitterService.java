@@ -1,8 +1,10 @@
 package camel;
 
+import common.Utils;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.rest.RestBindingMode;
 import twitter4j.DirectMessage;
 import twitter4j.Status;
 
@@ -49,14 +51,22 @@ public class TwitterService extends CamelService {
     private String msgDir = "directmessage";
     private String timelineDir = "timeline";
 
-    public TwitterService() {
+    static TwitterService instance = new TwitterService();
+
+    private TwitterService() {
     }
 
-    public TwitterService(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
-        this.consumerKey = consumerKey;
-        this.consumerSecret = consumerSecret;
-        this.accessToken = accessToken;
-        this.accessTokenSecret = accessTokenSecret;
+    static public TwitterService instance(){
+        return instance;
+    }
+
+    static public TwitterService instance(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret){
+        instance.accessToken = accessToken;
+        instance.consumerKey = consumerKey;
+        instance.consumerSecret = consumerSecret;
+        instance.accessTokenSecret = accessTokenSecret;
+
+        return instance;
     }
 
     public String getKeyword() {
@@ -86,8 +96,29 @@ public class TwitterService extends CamelService {
     @Override
     public void addRoutes() throws Exception {
         addTimelineRoute();
-        addSearchRoute();
-        addMsgRoute();
+//        addSearchRoute();
+//        addMsgRoute();
+        addRoute(new RouteBuilder() {
+            @Override
+            public void configure() throws Exception {
+                restConfiguration().component("restlet").host("localhost").port(8000).bindingMode(RestBindingMode.auto);
+                rest("/say")
+                        .get("/hello").to("direct:hello")
+                        .post("/post").to("direct:post")
+                        .get("/bye").to("direct:bye");
+
+                from("direct:hello")
+                        .transform().constant(readFile()).process(new PrintProcessor());
+                from("direct:post")
+                        .process(new PostProcessor());
+                from("direct:bye")
+                        .transform().constant("Bye World").process(new PrintProcessor());
+            }
+        });
+    }
+
+    private String readFile() throws Exception {
+        return Utils.readRawContentFromFile(rootDir + timelineDir + "/" + timeline + ".txt");
     }
 
     private void addTimelineRoute() throws Exception{
@@ -136,6 +167,23 @@ public class TwitterService extends CamelService {
         }
     }
 
+    static class PostProcessor implements Processor{
+        @Override
+        public void process(Exchange exchange) throws Exception {
+            InputStream inputStream = exchange.getIn().getBody(InputStream.class);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line = null;
+            while((line=bufferedReader.readLine())!=null){
+                System.out.println(line);
+            }
+            try {
+                inputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     static class TwitterProcessor implements Processor {
 
         @Override
@@ -149,7 +197,8 @@ public class TwitterService extends CamelService {
             String content;
             if(obj instanceof Status) {
                 Status status = (Status)obj;
-                name = status.getUser().getScreenName() + "-" + status.getCreatedAt().getTime() + ".txt";
+//                name = status.getUser().getScreenName() + "-" + status.getCreatedAt().getTime() + ".txt";
+                name = status.getUser().getScreenName() + ".txt";
                 content = status.getText();
             } else if(obj instanceof List) {
                 List<Status> ss = (List<Status>)obj;
@@ -164,8 +213,8 @@ public class TwitterService extends CamelService {
                 content = obj + "";
             }
 
-            exchange.getIn().setHeader(Exchange.FILE_NAME, name);
-            exchange.getIn().setBody(content);
+            exchange.getOut().setHeader(Exchange.FILE_NAME, name);
+            exchange.getOut().setBody(content);
         }
     }
 }
