@@ -7,13 +7,8 @@ import camel.TwitterService;
  */
 public class PeopleProcessor extends PostProcessor{
     @Override
-    public String handle() {
-        try {
-            TwitterService.instance().setTimeline(body);
-            return "OK";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
+    public String handle() throws Exception {
+        TwitterService.instance().setTimeline(body);
+        return "OK";
     }
 }

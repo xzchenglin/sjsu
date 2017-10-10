@@ -23,6 +23,7 @@ abstract class PostProcessor implements Processor {
             while ((line = bufferedReader.readLine()) != null) {
                 body += line;
             }
+            body = body.trim();
 
             String resp = handle();
 
@@ -30,12 +31,13 @@ abstract class PostProcessor implements Processor {
 
         } catch (Exception e) {
             e.printStackTrace();
+            exchange.getOut().setBody(e.getMessage());
         } finally {
             inputStream.close();
         }
     }
 
-    abstract String handle();
+    abstract String handle() throws Exception;
 }
 
 
