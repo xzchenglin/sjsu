@@ -9,7 +9,7 @@ S3 in a Tree
 •	ISA: Divyankitha Urs  
 •	Student: [Lin Cheng](https://www.linkedin.com/in/lin-cheng-08b31630/)  
 
-(Please find more details in the Canvas [document](https://sjsu.instructure.com/files/48297608))  
+(Please find more details in the Canvas [document](https://sjsu.instructure.com/files/48300370))  
 	  
 •	At a glance:  
   
