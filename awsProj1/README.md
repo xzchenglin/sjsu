@@ -5,13 +5,13 @@ S3 in a Tree
 
 •	University Name: http://www.sjsu.edu/  
 •	Course: Cloud Technologies  
-•	Professor Sanjay Garje  
+•	Professor: Sanjay Garje  
 •	ISA: Divyankitha Urs  
 •	Student: [Lin Cheng](https://www.linkedin.com/in/lin-cheng-08b31630/)  
 
-(Plesse find more details in the Canvas [docmunent](https://sjsu.instructure.com/files/48297608))  
+(Please find more details in the Canvas [document](https://sjsu.instructure.com/files/48297608))  
 	  
-•	At a gleance:  
+•	At a glance:  
   
 ![a](https://github.com/xzchenglin/sjsu/blob/master/awsProj1/sc.png)  
   
@@ -26,7 +26,7 @@ S3 in a Tree
 
 •	Pre-requisites Setup  
    o	AWS requirement:  
-    In this project, I use a lot of others including(more details are in the Canvas docmunent):  
+    In this project, I use a lot of others including(more details are in the Canvas document):  
       EC2  
       ELB  
       Lambda  
@@ -53,8 +53,8 @@ S3 in a Tree
    o	Check out source code from Github  
    o	cd awsProj1, and do a "mvn clean install"  
    o	Copy all stuff in awsProj1/proj1-service/target to the working folder (/opt/proj1)  
-   o	Cpoy /proj1-web/src/python/server.py, /proj1-web/src/webapp/index.html + main.css to the working folder  
-   o	Goto working folder and run:  
+   o	Copy /proj1-web/src/python/server.py, /proj1-web/src/webapp/index.html + main.css to the working folder  
+   o	Go to working folder and run:  
        python server.py  
        java -cp proj1-service-1.0.jar  service.camel.RestService  
    o	Check http://localhost
