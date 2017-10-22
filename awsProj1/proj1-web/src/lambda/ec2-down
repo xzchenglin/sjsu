@@ -1,0 +1,23 @@
+var aws = require('aws-sdk');
+var sns = new aws.SNS();
+
+exports.handler = (event, context, callback) => {
+    var msg = JSON.stringify(event);
+    console.log('EC2:', msg);
+
+    sns.publish({
+        Subject:'EC2 down',
+        Message: msg,
+        TopicArn: 'arn:aws:sns:us-east-1:914381644891:s3update'
+    }, function(err, data) {
+        if (err) {
+            console.log(err.stack);
+
+            context.done(err, 'Finished with Errors.');
+            return;
+        }
+        console.log(data);
+
+        context.done(null, 'Finished!');
+    });
+};

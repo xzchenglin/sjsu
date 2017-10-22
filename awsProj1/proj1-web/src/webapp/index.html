@@ -1,0 +1,261 @@
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/qs/dist/qs.js"></script>
+<script src="https://unpkg.com/popper.js"></script>
+<script src="https://unpkg.com/tooltip.js"></script>
+<script src="https://unpkg.com/v-tooltip"></script>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<html lang="en">
+<meta>
+<meta charset="UTF-8">
+<title>S3 Tree</title>
+</meta>
+
+<body>
+<!-- item template -->
+<script type="text/x-template" id="item-template">
+
+    <li>
+        <div
+                :class="{bold: isFolder}"
+                v-tooltip.top="{content:model.meta}"
+                @click.stop="click"
+                @mouseover='mouseOver'
+                @dblclick.stop="dclick">
+            {{model.name}}
+            <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+            <span class="red" v-else @click.stop="dclick" >×</span>
+        </div>
+        <ul v-show="open" v-if="isFolder">
+            <item
+                    class="item"
+                    v-for="model in model.children"
+                    :model="model">
+            </item>
+            <input type="file" label="+" id="resource" name="resource" ref="resource">
+            <button id="ub"  name="ub" v-on:click="addChild">↑</button>
+
+        </ul>
+    </li>
+
+</script>
+
+<!-- the root element -->
+<ul id="demo">
+    <p><label width="500" v-tooltip.right-start="{ content: '<li>Click <b>folder [+]</b> to open</li><li>Click file to download</li><li>Click ↑ under different folders to upload</li><li>Click × to delete</li><li>Hover to view available metadata</li>' }">^^^^^^^^ S3 Tree ^^^^^^^(?)</label>
+
+    </p>
+
+    <p/>
+
+    <item
+            class="item"
+            :model="treeData">
+    </item>
+</ul>
+
+<script>
+    Vue.prototype.$http = axios.create({
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        transformRequest: [function (data) {
+            return data
+        }
+        ],
+        paramsSerializer: function (data) {
+            return data
+        }
+    })
+
+    // demo data
+    var data = {}
+    var url = window.location.protocol + "//" + window.location.hostname
+
+    // define the item component
+    Vue.component('item', {
+        template: '#item-template',
+        props: {
+            model: Object
+        },
+        data: function () {
+            return {
+                open: false,
+				active:false
+            }
+        },
+        computed: {
+            isFolder: function () {
+                return this.model.folder
+            }
+        },
+        methods: {
+            click: function () {
+                console.log("model:");
+                console.log(this.model);
+                console.log(this.model.fullPath);
+                if (this.isFolder) {
+                    if(typeof this.model.fullPath !== "undefined"){
+                        demo.$http.get(url + '/s3/list?path='+ this.model.fullPath).then((response) => {
+                            console.log(response);
+                        Vue.set(this.model, 'children', response.data.children)
+                        this.open = !this.open
+                    }, (response) => {
+                            this.error = response.error_code
+                        });
+                    } else {
+                        this.open = !this.open
+                    }
+                } else {
+                    console.log(this);
+                    console.log(this.model.fullPath);
+                    demo.$http.get(url + '/s3/download?path='+ this.model.fullPath).then((response) => {
+                        console.log(response);
+                    if(response.status==200){
+                        window.location = url + '/download/' + this.model.fullPath.split("/")[this.model.fullPath.split("/").length-1];
+                    }
+                }, (response) => {
+                        this.error = response.error_code
+                    });
+
+                }
+            },
+            dclick: function () {
+                if (!this.isFolder) {
+                    demo.$http.get(url + '/s3/del?path='+ this.model.fullPath).then((response) => {
+                        if (response.status==200) {
+                            this.$parent.open=false;
+                            demo.getData()
+                    }
+                }, (response) => {
+                        this.error = response.error_code
+                    });
+                }
+            },
+            addChild: function () {
+
+                var formData = new FormData()
+
+                console.log(this.$refs.resource.files[0]);
+				if (this.$refs.resource.files[0].size > 1024*1024*10){
+					alert("File size should not be larger than 10M.");
+					return;
+				}
+                formData.append('file', this.$refs.resource.files[0])
+
+                for (var value of formData.keys()) {
+                    console.log(value);
+                }
+                for (var value of formData.values()) {
+                    console.log(value);
+                }
+
+                axios.create({
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    transformRequest: [function (data) {
+                        var ret = qs.stringify(data)
+                        console.log("transformRequest: " + ret)
+                        return ret;
+                    }
+                    ],
+                    paramsSerializer: function (data) {
+                        var ret = qs.stringify(data)
+                        console.log("paramsSerializer: " + ret)
+                        return ret;
+                    }
+                }).post(url + '/upload', formData, {
+                    method: 'post',
+                    data: Qs.stringify(data),
+                    headers: {
+                        'file-name': this.$refs.resource.files[0].name,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    transformRequest: [function (data) {
+                        return data
+                    }],
+                    onUploadProgress: function(e) {
+                        let percentage = Math.round((e.loaded * 100) / e.total) || 0
+                        console.log(e, percentage)
+                    }
+                }).then((response) => {
+                    if (response.status==200) {
+                    console.log(response.data);
+                    var path = '';
+                    if(typeof this.model.fullPath == "undefined"){
+                        path=this.$refs.resource.files[0].name;
+                    } else {
+                        path=this.model.fullPath + this.$refs.resource.files[0].name;
+                    }
+                    this.$http.get(url + '/s3/upload?path=' + path).then((response) => {
+                        if (response.status==200) {
+                            this.open=false;
+                            demo.getData()
+                    }
+
+                }, (response) => {
+                        this.error = response.error_code
+                    });
+
+                } else {
+                    this.$Notice.error({
+                        title: 'Error',
+                        message: response.data.imgId
+                    })
+                }
+            }).catch(function (error) {
+                    console.log(error)
+
+                })
+
+            },
+		mouseOver: function(){
+			console.log(this.model.meta);
+        },
+		getTooltip: function(){
+		console.log(this)
+			return this.model.meta;
+        }
+        }
+    })
+
+	Vue.component('modal', {
+  template: '#modal-template'
+
+})
+
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            treeData:data,
+			showModal: false
+        },
+
+        methods: {
+            getData : function(dataType){
+			console.log("wwwwwww:" + url)
+                this.$http.get(url + '/s3/list').then((response) => {
+                    console.log(response.data);
+                demo.treeData = response.data
+            }, (response) => {
+                    this.error = response.error_code
+                });
+            }
+        },
+        beforeMount() {
+            console.log('ready')
+            this.getData()
+        }
+
+    })
+
+</script>
+</body>
+</html>
+
