@@ -57,7 +57,11 @@ S3 in a Tree
    o	Go to working folder and run:  
        python server.py  
        java -cp proj1-service-1.0.jar  service.camel.RestService  
-   o	Check http://localhost
- 
+   o	Check http://localhost  
+     
+     
+ •	References  
+   o	[Vue.js documents](https://vuejs.org/v2/guide/)  
+   o	[Simple Web server by Python (Chinese)](https://zhuanlan.zhihu.com/p/21323273)  
 
 
