@@ -133,6 +133,7 @@ public class S3ManagerBean implements S3Manager {
             File file = new File(root + "upload/" + path.split("/")[path.split("/").length-1]);
             ObjectMetadata meta = new ObjectMetadata();
             Map<String, String> md = new HashMap<>();
+            //hard code for now before due to Cognito issue
             md.put(FIRST_NAME, "Lin");
             md.put(LAST_NAME, "Cheng");
             md.put(UPLOADED, new Date().toString());
@@ -179,8 +180,8 @@ public class S3ManagerBean implements S3Manager {
             int len = 0;
 
             URL url = new URL(cdn + "/" + path);
-            inputStream = url.openStream();
             try{
+                inputStream = url.openStream();
                 while ((len = inputStream.read(buf)) > 0) {
                     fos.write(buf, 0, len);
                 }
