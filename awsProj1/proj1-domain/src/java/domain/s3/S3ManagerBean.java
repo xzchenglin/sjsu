@@ -129,7 +129,7 @@ public class S3ManagerBean implements S3Manager {
         try {
             AccessControlList acl = new AccessControlList();
             acl.grantPermission(new CanonicalGrantee("8df1e4cda6ef063de238495fd071e0716063fc689c198b3ad4fa19220aa24288"), Permission.FullControl);
-            acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
+            acl.grantPermission(GroupGrantee.AuthenticatedUsers, Permission.Read);
             File file = new File(root + "upload/" + path.split("/")[path.split("/").length-1]);
             ObjectMetadata meta = new ObjectMetadata();
             Map<String, String> md = new HashMap<>();
@@ -170,36 +170,33 @@ public class S3ManagerBean implements S3Manager {
     @Override
     public com.amazonaws.services.s3.model.S3Object download(String path) {
         com.amazonaws.services.s3.model.S3Object o = null;
-        InputStream s3is = null;
+        InputStream inputStream = null;
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(new File(
                     root + "download/" + path.split("/")[path.split("/").length-1]));
-            byte[] read_buf = new byte[1024];
-            int read_len = 0;
+            byte[] buf = new byte[1024];
+            int len = 0;
 
             URL url = new URL(cdn + "/" + path);
-            s3is = url.openStream();
+            inputStream = url.openStream();
             try{
-                while ((read_len = s3is.read(read_buf)) > 0) {
-                    fos.write(read_buf, 0, read_len);
+                while ((len = inputStream.read(buf)) > 0) {
+                    fos.write(buf, 0, len);
                 }
                 System.out.println("read from CDN.");
             } catch (Throwable e){
                 o = s3.getObject(bucket, path);
-                s3is = o.getObjectContent();
-                while ((read_len = s3is.read(read_buf)) > 0) {
-                    fos.write(read_buf, 0, read_len);
+                inputStream = o.getObjectContent();
+                while ((len = inputStream.read(buf)) > 0) {
+                    fos.write(buf, 0, len);
                 }
                 System.out.println("read from S3.");
             }
-
-            s3is.close();
-            fos.close();
-        } catch (Exception e) {
+       } catch (Exception e) {
             System.err.println(e.getMessage());
         } finally {
-            IOUtils.closeQuietly(s3is);
+            IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(fos);
         }
         return o;
