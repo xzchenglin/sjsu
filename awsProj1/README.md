@@ -38,6 +38,8 @@ S3 in a Tree
       R53  
       CloudWatch  
       SNS  
+      WorkMail  
+      Congnito    
       
    However, the minimal requirement is just a EC2 server with public access.   
   
