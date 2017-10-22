@@ -44,7 +44,7 @@ S3 in a Tree
    However, the minimal requirement is just a EC2 server with public access.   
   
    o	Required software: JDK 1.8+, Python 2.7+, Maven 3.3+  
-   o	Local configuration: AWS SDK credential file, /opt/proj1/config.txt(like below)  
+   o	Local configuration: AWS SDK [credentials](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html), /opt/proj1/config.txt(like below)  
       dbserver=xxx.rds.amazonaws.com  
       dbport=5432  
       db=dbName  
