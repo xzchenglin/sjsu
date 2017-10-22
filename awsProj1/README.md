@@ -1,9 +1,11 @@
 •	University Name: http://www.sjsu.edu/  
 •	Course: Cloud Technologies  
-•	Professor Sanjay Garje 
+•	Professor Sanjay Garje  
 •	ISA: Divyankitha Urs  
 •	Student: Lin Cheng  
-  
+
+(More details are in the Canvas docmunent)  
+	  
 •	At a gleance:  
   
 ![a](https://github.com/xzchenglin/sjsu/blob/master/awsProj1/sc.png)  
