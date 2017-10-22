@@ -24,9 +24,9 @@ S3 in a Tree
    o	Show file metadata  
    o	Get notification when files get deleted  
 
-•	Pre-requisites Setup  
+•	Pre-requisites Setup:  
    o	AWS requirement:  
-    In this project, I use a lot of others including(more details are in the Canvas document):  
+    In this project, the following services are used-  
       EC2  
       ELB  
       Lambda  
@@ -39,7 +39,7 @@ S3 in a Tree
       CloudWatch  
       SNS  
       
-   However, the minimal requirement is just a EC2 server to do deployment.   
+   However, the minimal requirement is just a EC2 server with public access.   
   
    o	Required software: JDK 1.8+, Python 2.7+, Maven 3.3+  
    o	Local configuration: AWS SDK credential file, /opt/proj1/config.txt(like below)  
