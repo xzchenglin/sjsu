@@ -7,7 +7,7 @@ S3 in a Tree
 •	Course: Cloud Technologies  
 •	Professor Sanjay Garje  
 •	ISA: Divyankitha Urs  
-•	Student: Lin Cheng  
+•	Student: [Lin Cheng](https://www.linkedin.com/in/lin-cheng-08b31630/)  
 
 (Plesse find more details in the Canvas [docmunent](https://sjsu.instructure.com/files/48297608))  
 	  
