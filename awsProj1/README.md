@@ -25,8 +25,8 @@ S3 in a Tree
    o	Get notification when files get deleted  
 
 •	Pre-requisites Setup:  
-   o	AWS requirement:  
-    In this project, the following services are used-  
+   o	AWS requirement  
+    In this project, the following services are used: 
       - EC2  
       - ELB  
       - Lambda  
@@ -45,7 +45,7 @@ S3 in a Tree
   
    o	Required software: JDK 1.8+, Python 2.7+, Maven 3.3+  
    o	Local configuration: AWS SDK [credentials](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html), /opt/proj1/config.txt(like below)  
-      dbserver=host_or_endpoint 
+      dbserver=host_or_endpoint  
       dbport=5432  
       db=dbName  
       dbuser=user  
