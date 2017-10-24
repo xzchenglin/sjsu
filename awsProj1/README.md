@@ -26,7 +26,7 @@ S3 in a Tree
 
 •	Pre-requisites Setup:  
    o	AWS requirement  
-    In this project, the following services are used: 
+    In this project, the following services are used:  
       - EC2  
       - ELB  
       - Lambda  
