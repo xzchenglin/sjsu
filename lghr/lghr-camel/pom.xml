@@ -46,11 +46,21 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>theMainClass</mainClass>
-                        </manifest>
+                        <manifestEntries>
+                            <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                            <Bundle-Name>${project.groupId}.${project.artifactId}</Bundle-Name>
+                            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}
+                            </Bundle-SymbolicName>
+                            <Bundle-Version>${project.version}</Bundle-Version>
+                            <Bundle-Vendor>${project.groupId}</Bundle-Vendor>
+                            <Bundle-Activator>camel.CamelActivator</Bundle-Activator>
+                            <Export-Package>
+                                com.lghr.api
+                            </Export-Package>
+                            <Import-Package>
+                                org.osgi.framework
+                            </Import-Package>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
@@ -127,6 +137,19 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-core -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi</artifactId>
+            <version>3.0.0</version>
+            <type>jar</type>
         </dependency>
 
     </dependencies>
