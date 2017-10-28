@@ -174,4 +174,12 @@ public class TwitterService extends CamelService {
         });
     }
 
+    public static void main(String[] args){
+        try {
+            instance.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
