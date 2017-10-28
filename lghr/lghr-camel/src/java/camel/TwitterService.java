@@ -49,9 +49,19 @@ public class TwitterService extends CamelService {
     private String directmessageUri = "directmessage";
     private String timelineUri = "timeline";
 
-    static TwitterService instance = new TwitterService();
+    static TwitterService instance = new TwitterService("A3r6vuJNqxRxWy7vvQYKvN3zY",
+            "FoZQyC6zyrrRb7FUFbei3q0gXOCHISbExU0UADHWIFDUFol3c4",
+            "42130867-xhH261CGI62un52HGm66Iks2Xlw7OYaJijm3ucwVG",
+            "0TN0VWs6CFsYKFDHxKtZnmbIgaLMuIxI8Itl2vsHWyjwl");
 
     private TwitterService() {
+    }
+
+    public TwitterService(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
+        this.consumerKey = consumerKey;
+        this.consumerSecret = consumerSecret;
+        this.accessToken = accessToken;
+        this.accessTokenSecret = accessTokenSecret;
     }
 
     static public TwitterService instance(){
