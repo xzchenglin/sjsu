@@ -6,13 +6,11 @@ import org.openstack4j.api.identity.EndpointURLResolver;
 import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.common.Identifier;
-import org.openstack4j.model.compute.Flavor;
-import org.openstack4j.model.compute.Image;
-import org.openstack4j.model.compute.Server;
-import org.openstack4j.model.compute.ServerCreate;
+import org.openstack4j.model.compute.*;
 import org.openstack4j.model.identity.URLResolverParams;
 import org.openstack4j.model.identity.v3.Token;
 import org.openstack4j.model.network.Network;
+import org.openstack4j.model.network.Subnet;
 import org.openstack4j.openstack.OSFactory;
 import org.openstack4j.openstack.identity.internal.DefaultEndpointURLResolver;
 
@@ -27,6 +25,7 @@ import java.util.List;
 public class OpenstackController {
 
     static final String PROJ_ID = "cc931089a00f455a87be0f39df3ef40c";
+    static final String HOST = "localhost";
 
     private OpenstackController() {
     }
@@ -50,20 +49,20 @@ public class OpenstackController {
             @Override
             public String findURLV3(URLResolverParams arg0) {
                 String ret = super.findURLV3(arg0);
-                ret = ret.replace("controller", "localhost");
+                ret = ret.replace("controller", HOST);
                 return ret;
             }
 
             @Override
             public String findURLV2(URLResolverParams arg0) {
                 String ret = super.findURLV2(arg0);
-                ret = ret.replace("controller", "localhost");
+                ret = ret.replace("controller", HOST);
                 return ret;
             }
         };
 
         os = OSFactory.builderV3()
-                .endpoint("http://127.0.0.1:5000/v3")
+                .endpoint("http://" + HOST + ":5000/v3")
                 .credentials("admin", "admin_user_secret", Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId(PROJ_ID))
                 .withConfig(Config.newConfig().withEndpointURLResolver(endpointUrlResolver))
@@ -92,6 +91,11 @@ public class OpenstackController {
         return ret;
     }
 
+    public List<? extends Subnet> getSubnets(){
+        List<? extends Subnet> ret = os.networking().subnet().list();
+        return ret;
+    }
+
     public Server createServer(String name, String flavorId, String imageId, String netId){
         List<String> netList = new ArrayList<>();
         netList.add(netId);
@@ -99,15 +103,22 @@ public class OpenstackController {
                 .name(name)
                 .flavor(flavorId)
                 .image(imageId)
+//                .addNetworkPort("")
                 .networks(netList)
                 .build();
 
         Server server = os.compute().servers().boot(sc);
+        os.compute().servers().action(server.getId(), Action.START);
         return server;
     }
 
     public int delServer(String id){
         ActionResponse ret = os.compute().servers().delete(id);
+        return ret.getCode();
+    }
+
+    public int opServer(String id, String action){
+        ActionResponse ret = os.compute().servers().action(id, Action.valueOf(action));
         return ret.getCode();
     }
 

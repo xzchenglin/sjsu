@@ -19,8 +19,10 @@ public class ListProcessor extends GetProcessor {
                 return JsonHelper.toJson(OpenstackController.instance().getImages());
             case "network":
                 return JsonHelper.toJson(OpenstackController.instance().getNetworks());
+            case "subnet":
+                return JsonHelper.toJson(OpenstackController.instance().getSubnets());
             default:
-                return JsonHelper.toJson("Not suppported.");
+                return JsonHelper.toJson("Not supported.");
         }
     }
 }

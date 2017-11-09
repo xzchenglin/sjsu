@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.identity.v3.Token;
 
+import java.lang.reflect.AccessibleObject;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -46,6 +47,19 @@ public class OpenstackControllerTest {
         List ss =  OpenstackController.instance().getNetworks();
         assertNotNull(ss);
         System.out.println(ss.get(1));
+    }
+
+    @Test
+    public void getSubnets() throws Exception {
+        List ss =  OpenstackController.instance().getSubnets();
+        assertNotNull(ss);
+        System.out.println(ss.get(0));
+    }
+
+    @Test
+    public void opServer() throws Exception {
+        int code = OpenstackController.instance().opServer("c21f4220-4de7-4612-ae6e-f18aa15bf159", "STOP");
+        assertEquals(200, code);
     }
 
     @Test
