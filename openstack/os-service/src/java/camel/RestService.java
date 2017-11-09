@@ -35,7 +35,7 @@ public class RestService extends CamelService {
                         .process(new ListProcessor());
                 from("direct:del")
                         .process(new DeleteProcessor());
-                from("direct:image")
+                from("direct:create")
                         .process(new CreateProcessor());
             }
         });

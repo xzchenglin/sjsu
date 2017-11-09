@@ -9,24 +9,12 @@ import vm.OpenstackController;
 public class DeleteProcessor extends GetProcessor {
     @Override
     String handle() {
-        String[] ps = params.split("&");
-        String type = "";
-        String id = "";
-        for(String s:ps){
-            String[] ss = s.split("=");
-            if("type".equalsIgnoreCase(ss[0])){
-                type = ss[1];
-            }
-            if("id".equalsIgnoreCase(ss[0])){
-                id = ss[1];
-            }
-        }
 
-        switch (type){
+        switch (paramMap.get("type")){
             case "server":
-                return JsonHelper.toJson(OpenstackController.instance().delServer(id));
+                return JsonHelper.toJson(OpenstackController.instance().delServer(paramMap.get("id")));
             default:
-                return JsonHelper.toJson("Not suppported.");
+                return JsonHelper.toJson("Not supported.");
         }
     }
 }
