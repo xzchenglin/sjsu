@@ -6,6 +6,8 @@ import org.apache.camel.Processor;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /***
  *Created by Lin Cheng
@@ -27,6 +29,10 @@ abstract class PostProcessor implements Processor {
 
             String resp = handle();
 
+            Map<String, Object> map = new HashMap<>();
+            map.put( "Access-Control-Allow-Origin","*" );
+            map.put( "Access-Control-Allow-Methods","*" );
+            exchange.getOut().setHeaders(map);
             exchange.getOut().setBody(resp);
 
         } catch (Exception e) {

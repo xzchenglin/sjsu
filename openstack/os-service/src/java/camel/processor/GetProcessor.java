@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,10 @@ abstract class GetProcessor implements Processor {
                 collect(Collectors.toMap(s->s.split("=")[0], s->s.split("=")[1]));
 
         String resp = handle();
+        Map<String, Object> map = new HashMap<>();
+        map.put( "Access-Control-Allow-Origin","*" );
+        map.put( "Access-Control-Allow-Methods","*" );
+        exchange.getOut().setHeaders(map);
         exchange.getOut().setBody(resp);
     }
 
