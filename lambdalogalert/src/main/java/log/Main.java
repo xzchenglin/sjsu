@@ -42,6 +42,20 @@ public class Main implements RequestHandler{
                 context.getLogger().log(respStr + ":" + RedisUtils.getNum(time, respStr));
                 if(RedisUtils.getNum(time, respStr) > 30){
                     context.getLogger().log("!!!!!!" + respStr + ":" + RedisUtils.getNum(time, respStr));
+//                    AmazonSNSClient snsClient = new AmazonSNSClient(new AWSCredentials() {
+//                        @Override
+//                        public String getAWSAccessKeyId() {
+//                            return "xxx";
+//                        }
+//
+//                        @Override
+//                        public String getAWSSecretKey() {
+//                            return "xxx";
+//                        }
+//                    });
+//                    snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+//                    PublishRequest publishRequest = new PublishRequest("arn:aws:sns:us-east-1:828880248823:http-alert",
+//                            "Got " + RedisUtils.getNum(time, respStr) + " " + respStr + " errors in last 5 minutes.");
                     AmazonSNSClient snsClient = new AmazonSNSClient(new AWSCredentials() {
                         @Override
                         public String getAWSAccessKeyId() {
@@ -50,16 +64,16 @@ public class Main implements RequestHandler{
 
                         @Override
                         public String getAWSSecretKey() {
-                            return "yyy";
+                            return "xxx";
                         }
                     });
                     snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
                     PublishRequest publishRequest = new PublishRequest("arn:aws:sns:us-east-1:914381644891:s3update",
-                            respStr+ "->" + RedisUtils.getNum(time, respStr));
+                            "Got " + RedisUtils.getNum(time, respStr) + " " + respStr + " errors in last 5 minutes.");
                     publishRequest.setSubject("Too many failed requests");
                     snsClient.publish(publishRequest);
 
-                    RedisUtils.del(time);
+                    RedisUtils.del(time + "@" + respStr);
                 }
             }
         }

@@ -25,10 +25,12 @@ public class KinesisManager {
         AmazonKinesisClientBuilder clientBuilder = AmazonKinesisClientBuilder.standard();
 
         clientBuilder.setRegion("us-east-1");
+//        clientBuilder.setEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("kinesis.us-east-1.amazonaws.com","us-east-1"));
         clientBuilder.setCredentials(new AWSCredentialsProvider() {
             @Override
             public AWSCredentials getCredentials() {
-                return new BasicAWSCredentials("xxx", "yyy");
+//                return new BasicAWSCredentials("xxx", "xxx");
+                return new BasicAWSCredentials("xxx", "xxx");
             }
 
             @Override
@@ -41,42 +43,20 @@ public class KinesisManager {
         kinesisClient = clientBuilder.build();
     }
 
-    public static void write(){
+    public static void write(String name, List<PutRecordsRequestEntry> putRecordsRequestEntryList){
 
-        while (true) {
-            PutRecordsRequest putRecordsRequest = new PutRecordsRequest();
-            putRecordsRequest.setStreamName("test");
-            List<PutRecordsRequestEntry> putRecordsRequestEntryList = new ArrayList<>();
-            int i = Math.abs((int)Math.ceil(new Random().nextInt()/1000));
-            int ii = i + 3;
+        PutRecordsRequest putRecordsRequest = new PutRecordsRequest();
+        putRecordsRequest.setStreamName(name);
 
-            for (; i < ii; i++) {
-                TestData data = new TestData("test" + i, i);
-                data.setResponse(400 + ii - i);
-                PutRecordsRequestEntry putRecordsRequestEntry = new PutRecordsRequestEntry();
-                putRecordsRequestEntry.setData(ByteBuffer.wrap(JsonHelper.toJson(data).getBytes()));
-                putRecordsRequestEntry.setPartitionKey(String.format("partitionKey-%d", i));
-                putRecordsRequestEntryList.add(putRecordsRequestEntry);
-            }
-
-            putRecordsRequest.setRecords(putRecordsRequestEntryList);
-            PutRecordsResult putRecordsResult = kinesisClient.putRecords(putRecordsRequest);
-            putRecordsResult.getRecords().stream().forEach(System.out::println);
-
-            try {
-                Thread.sleep(3000);
-            }
-            catch (InterruptedException exception) {
-                throw new RuntimeException(exception);
-            }
-
-        }
+        putRecordsRequest.setRecords(putRecordsRequestEntryList);
+        PutRecordsResult putRecordsResult = kinesisClient.putRecords(putRecordsRequest);
+        putRecordsResult.getRecords().stream().forEach(System.out::println);
     }
 
-    public static void read(){
+    public static void read(String name){
         String shardIterator;
         GetShardIteratorRequest getShardIteratorRequest = new GetShardIteratorRequest();
-        getShardIteratorRequest.setStreamName("test");
+        getShardIteratorRequest.setStreamName(name);
         getShardIteratorRequest.setShardId("shardId-000000000000");
         getShardIteratorRequest.setShardIteratorType("TRIM_HORIZON");
 
@@ -103,39 +83,4 @@ public class KinesisManager {
         }
     }
 
-    static public class TestData{
-
-        public TestData(String name, int value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        String name;
-        int value;
-        int response;
-
-        public int getResponse() {
-            return response;
-        }
-
-        public void setResponse(int response) {
-            this.response = response;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
-        }
-    }
 }

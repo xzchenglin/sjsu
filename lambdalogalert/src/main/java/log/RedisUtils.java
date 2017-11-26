@@ -58,6 +58,15 @@ public class RedisUtils {
         }
     }
 
+    public static void del(String key) {
+        JedisCommands j = getJedis();
+        try {
+            j.del(key);
+        } finally {
+            close(j);
+        }
+    }
+
     public static void hset(Long qid, String field, Object value) {
         if (value == null) {
             return;
@@ -81,6 +90,7 @@ public class RedisUtils {
         JedisCommands j = getJedis();
         try {
             j.incr(qid + "@" + field);
+            j.expire(qid + "@" + field, timeout);
         } finally {
             close(j);
         }

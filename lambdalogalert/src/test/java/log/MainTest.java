@@ -44,7 +44,7 @@ public class MainTest {
                 "      \"awsRegion\": \"us-east-1\"\n" +
                 "    }";
 
-//        KinesisEvent.KinesisEventRecord r = JsonHelper.fromJson(str, KinesisEvent.KinesisEventRecord.class);
+        KinesisEvent.KinesisEventRecord r = JsonHelper.fromJson(str, KinesisEvent.KinesisEventRecord.class);
 //
 //
 //        new Main().handleRequest(req, null);
