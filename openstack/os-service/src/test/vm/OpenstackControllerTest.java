@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.identity.v3.Token;
 
-import java.lang.reflect.AccessibleObject;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,8 +16,8 @@ public class OpenstackControllerTest {
     @Test
     public void authenticate() throws Exception {
         Token t = OpenstackController.instance().authenticate();
-        System.out.println(t.getId());
         assertNotNull(t);
+        System.out.println(t.getId());
     }
 
     @Test

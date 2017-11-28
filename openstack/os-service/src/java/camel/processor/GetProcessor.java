@@ -18,10 +18,10 @@ abstract class GetProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         String params = exchange.getIn().getHeader("CamelHttpQuery") + "";
-        paramMap = Arrays.stream(params.split("&")).
-                collect(Collectors.toMap(s->s.split("=")[0], s->s.split("=")[1]));
+        paramMap = Arrays.stream(params.split("&")).map(s->s.split("=")).collect(Collectors.toMap(a->a[0], a->a[1]));
 
         String resp = handle();
+
         Map<String, Object> map = new HashMap<>();
         map.put( "Access-Control-Allow-Origin","*" );
         map.put( "Access-Control-Allow-Methods","*" );

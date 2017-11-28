@@ -27,6 +27,22 @@ public class OpenstackController {
     static final String PROJ_ID = "cc931089a00f455a87be0f39df3ef40c";
     static final String HOST = "localhost";
 
+    static final EndpointURLResolver endpointUrlResolver = new DefaultEndpointURLResolver(){
+        @Override
+        public String findURLV3(URLResolverParams arg0) {
+            String ret = super.findURLV3(arg0);
+            ret = ret.replace("controller", HOST);
+            return ret;
+        }
+
+        @Override
+        public String findURLV2(URLResolverParams arg0) {
+            String ret = super.findURLV2(arg0);
+            ret = ret.replace("controller", HOST);
+            return ret;
+        }
+    };
+
     private OpenstackController() {
     }
 
@@ -44,23 +60,6 @@ public class OpenstackController {
     }
 
     public Token authenticate(){
-
-        final EndpointURLResolver endpointUrlResolver = new DefaultEndpointURLResolver(){
-            @Override
-            public String findURLV3(URLResolverParams arg0) {
-                String ret = super.findURLV3(arg0);
-                ret = ret.replace("controller", HOST);
-                return ret;
-            }
-
-            @Override
-            public String findURLV2(URLResolverParams arg0) {
-                String ret = super.findURLV2(arg0);
-                ret = ret.replace("controller", HOST);
-                return ret;
-            }
-        };
-
         os = OSFactory.builderV3()
                 .endpoint("http://" + HOST + ":5000/v3")
                 .credentials("admin", "admin_user_secret", Identifier.byName("Default"))
