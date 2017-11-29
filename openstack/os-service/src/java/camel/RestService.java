@@ -29,7 +29,8 @@ public class RestService extends CamelService {
                 rest("/os")
                         .get("/list").to("direct:list")
                         .get("/del").to("direct:del")
-                        .get("/create").to("direct:create");
+                        .get("/create").to("direct:create")
+                        .get("/op").to("direct:op");
 
                 from("direct:list")
                         .process(new ListProcessor());
