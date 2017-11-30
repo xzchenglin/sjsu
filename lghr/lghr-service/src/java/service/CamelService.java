@@ -1,11 +1,11 @@
-package camel;
+package service;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
 /**
- * Created by Lin Cheng on 2017/9/17.
+ * Created by Lin Cheng
  */
 public abstract class CamelService {
 

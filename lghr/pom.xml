@@ -10,6 +10,7 @@
     <version>1.0</version>
     <modules>
         <module>lghr-common</module>
+        <module>lghr-domain</module>
         <module>lghr-camel</module>
     </modules>
 
@@ -25,6 +26,7 @@
         </activation>
         <modules>
             <module>lghr-common</module>
+            <module>lghr-domain</module>
             <module>lghr-camel</module>
         </modules>
         <properties>
