@@ -1,6 +1,6 @@
-package camel.processor;
+package service.processor;
 
-import camel.JsonHelper;
+import service.JsonHelper;
 import vm.OpenstackController;
 
 /***

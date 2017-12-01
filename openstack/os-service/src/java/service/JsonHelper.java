@@ -1,4 +1,4 @@
-package camel;
+package service;
 
 import org.codehaus.jackson.map.ObjectMapper;
 

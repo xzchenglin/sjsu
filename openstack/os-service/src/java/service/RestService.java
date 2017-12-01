@@ -1,6 +1,6 @@
-package camel;
+package service;
 
-import camel.processor.*;
+import service.processor.*;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 
