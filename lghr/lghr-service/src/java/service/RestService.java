@@ -57,10 +57,21 @@ public class RestService extends CamelService {
                 restConfiguration().component("restlet").host("localhost").port(8272).bindingMode(RestBindingMode.auto);
 
                 rest("/twitter").enableCORS(true)
-                        .post("/api").to("direct:server"); /* hyunwook shin */
+                        .post("/api").to("direct:twitter"); /* hyunwook shin */
 
-                from("direct:server")
+                rest("/order").enableCORS(true)
+                        .get("/list").to("direct:list")
+                        .get("/del").to("direct:del")
+                        .post("/create").to("direct:create");
+
+                from("direct:twitter")
                         .process(new ServerPostProcessor());
+                from("direct:list")
+                        .process(new ListProcessor());
+                from("direct:del")
+                        .process(new DeleteProcessor());
+                from("direct:create")
+                        .process(new CreateProcessor());
             }
         });
     }
