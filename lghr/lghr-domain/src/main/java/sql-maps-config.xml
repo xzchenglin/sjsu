@@ -19,7 +19,7 @@
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://lghr.cqnkz4rdez7j.us-west-2.rds.amazonaws.com:3306/lghr"/>
                 <property name="username" value="lghr"/>
-                <property name="password" value="CMPE272lghr"/>
+                <property name="password" value="xxx"/>
             </dataSource>
         </environment>
     </environments>
