@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ns.customer">
+
+    <resultMap id="map" type="CUSTOMER">
+        <id column="customerNumber" property="customerNumber"/>
+        <result property="customerNumber" column="customerNumber" />
+        <result property="customerName" column="customerName" />
+        <result property="contactLastName" column="contactLastName" />
+        <result property="contactFirstName" column="contactFirstName" />
+        <result property="phone" column="phone" />
+        <result property="addressLine1" column="addressLine1" />
+        <result property="addressLine2" column="addressLine2" />
+        <result property="city" column="city" />
+        <result property="postalCode" column="postalCode" />
+        <result property="country" column="country" />
+        <result property="state" column="state" />
+        <result property="creditLimit" column="creditLimit" />
+        <collection property="orders" ofType="ORDER">
+            <id column="orderNumber" property="orderNumber"/>
+            <result property="orderDate" column="orderDate" />
+            <result property="requiredDate" column="requiredDate" />
+            <result property="shippedDate" column="shippedDate" />
+            <result property="status" column="status" />
+            <result property="comments" column="comments" />
+        </collection>
+        <!--<collection property="payments" ofType="PAYMENT">-->
+            <!--<result property="checkNumber" column="checkNumber" />-->
+            <!--<result property="paymentDate" column="paymentDate" />-->
+            <!--<result property="amount" column="amount" />-->
+        <!--</collection>-->
+    </resultMap>
+
+    <select id="list" resultType="CUSTOMER">
+        SELECT * FROM customers
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="map">
+        SELECT * FROM customers c left join orders o ON c.customerNumber=o.customerNumber
+        <!--left join payments p ON c.customerNumber=p.customerNumber -->
+        WHERE c.customerNumber = #{value}
+    </select>
+
+    <insert id="create" parameterType="CUSTOMER" useGeneratedKeys="true" keyProperty="customerNumber">
+        INSERT INTO customers (customerName,contactLastName,contactFirstName,phone,addressLine1,addressLine2,city,state,postalCode,country,creditLimit)
+        VALUES(#{customerName},#{contactLastName},#{contactFirstName},#{phone},#{addressLine1},#{addressLine2},#{city},#{state},#{postalCode},#{country},#{creditLimit});
+    </insert>
+
+    <update id="update" parameterType="CUSTOMER">
+        UPDATE customers SET
+        customerName=#{customerName},
+        contactLastName=#{contactLastName},
+        contactFirstName=#{contactFirstName},
+        phone=#{phone},
+        addressLine1=#{addressLine1},
+        addressLine2=#{addressLine2},
+        city=#{city},
+        state=#{state},
+        postalCode=#{postalCode},
+        country=#{country},
+        creditLimit=#{creditLimit}
+        WHERE customerNumber=#{customerNumber}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM customers WHERE customerNumber = #{value}
+    </delete>
+
+</mapper>

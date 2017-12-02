@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ns.product">
+
+    <resultMap id="resultMap" type="map">
+        <result property="productCode" column="productCode" />
+        <result property="productName" column="productName" />
+        <result property="productLine" column="productLine" />
+        <result property="productScale" column="productScale" />
+        <result property="productVendor" column="productVendor" />
+        <result property="productDescription" column="productDescription" />
+        <result property="quantityInStock" column="quantityInStock" />
+        <result property="buyPrice" column="buyPrice" />
+        <result property="MSRP" column="MSRP" />
+    </resultMap>
+
+    <select id="list" parameterType="model.Product" resultType="PRODUCT">
+        SELECT * FROM products
+        <where>
+            <if test="productName != null">
+                lower(productName) like #{productName}
+            </if>
+            <if test="productLine != null">
+                OR lower(productLine) like #{productLine}
+            </if>
+            <if test="productVendor != null">
+                OR lower(productVendor) like #{productVendor}
+            </if>
+             <if test="productDescription != null">
+                OR lower(productDescription) like #{productDescription}
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" parameterType="java.lang.String" resultType="PRODUCT">
+        SELECT * FROM products WHERE productCode = #{value}
+    </select>
+
+    <insert id="create" parameterType="PRODUCT">
+        INSERT INTO products (productCode,productName,productLine,productScale,productVendor,productDescription,quantityInStock,buyPrice,MSRP)
+        VALUES(#{productCode},#{productName},#{productLine},#{productScale},#{productVendor},#{productDescription},#{quantityInStock},#{buyPrice},#{MSRP});
+    </insert>
+
+    <update id="update" parameterType="PRODUCT">
+        UPDATE products SET
+        productName=#{productName},
+        productScale=#{productScale},
+        productVendor=#{productVendor},
+        productLine=#{productLine},
+        productDescription=#{productDescription},
+        quantityInStock=#{quantityInStock},
+        buyPrice=#{buyPrice},
+        MSRP=#{MSRP}
+        WHERE productCode=#{productCode}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        DELETE FROM products WHERE productCode = #{value}
+    </delete>
+
+</mapper>

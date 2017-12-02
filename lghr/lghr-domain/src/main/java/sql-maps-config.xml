@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <typeAliases>
+        <typeAlias type="model.Product" alias="PRODUCT"/>
+        <typeAlias type="model.Customer" alias="CUSTOMER"/>
+        <typeAlias type="model.Order" alias="ORDER"/>
+        <typeAlias type="model.OrderDetail" alias="OD"/>
+        <typeAlias type="model.Payment" alias="PAYMENT"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://lghr.cqnkz4rdez7j.us-west-2.rds.amazonaws.com:3306/lghr"/>
+                <property name="username" value="lghr"/>
+                <property name="password" value="CMPE272lghr"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="product.xml" />
+        <mapper resource="order.xml" />
+        <mapper resource="customer.xml" />
+    </mappers>
+
+</configuration>

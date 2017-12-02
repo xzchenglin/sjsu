@@ -29,5 +29,5 @@ abstract class GetProcessor implements Processor {
         exchange.getOut().setBody(resp);
     }
 
-    abstract String handle();
+    abstract String handle() throws Exception;
 }

@@ -44,10 +44,6 @@ public class RestService extends CamelService {
         return instance;
     }
 
-    static public RestService instance(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret){
-        return instance;
-    }
-
     @Override
     public void addRoutes() throws Exception {
         //add REST endpoints
@@ -59,19 +55,26 @@ public class RestService extends CamelService {
                 rest("/twitter").enableCORS(true)
                         .post("/api").to("direct:twitter"); /* hyunwook shin */
 
-                rest("/order").enableCORS(true)
+                rest("/rest").enableCORS(true)
                         .get("/list").to("direct:list")
-                        .get("/del").to("direct:del")
-                        .post("/create").to("direct:create");
+                        .get("/item").to("direct:item")
+                        .delete("/del").to("direct:del")
+                        .post("/create").to("direct:create")
+                        .post("/update").to("direct:update");
 
                 from("direct:twitter")
                         .process(new ServerPostProcessor());
+
+                from("direct:item")
+                        .process(new ItemProcessor());
                 from("direct:list")
                         .process(new ListProcessor());
                 from("direct:del")
                         .process(new DeleteProcessor());
                 from("direct:create")
                         .process(new CreateProcessor());
+                from("direct:update")
+                        .process(new UpdateProcessor());
             }
         });
     }

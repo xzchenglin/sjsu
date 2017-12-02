@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ns.order">
+
+    <resultMap id="map" type="ORDER">
+        <id column="orderNumber" property="orderNumber"/>
+        <result property="orderDate" column="orderDate" />
+        <result property="requiredDate" column="requiredDate" />
+        <result property="shippedDate" column="shippedDate" />
+        <result property="status" column="status" />
+        <result property="comments" column="comments" />
+        <association property="customer" javaType="CUSTOMER">
+            <id column="customerNumber" property="customerNumber"/>
+            <result property="customerNumber" column="customerNumber" />
+            <result property="customerName" column="customerName" />
+            <result property="contactLastName" column="contactLastName" />
+            <result property="contactFirstName" column="contactFirstName" />
+            <result property="phone" column="phone" />
+            <result property="addressLine1" column="addressLine1" />
+            <result property="addressLine2" column="addressLine2" />
+            <result property="city" column="city" />
+            <result property="postalCode" column="postalCode" />
+            <result property="country" column="country" />
+            <result property="state" column="state" />
+            <result property="creditLimit" column="creditLimit" />
+            <!--<collection property="payments" ofType="PAYMENT">-->
+                <!--<result property="checkNumber" column="checkNumber" />-->
+                <!--<result property="paymentDate" column="paymentDate" />-->
+                <!--<result property="amount" column="amount" />-->
+            <!--</collection>-->
+        </association>
+        <collection property="orderDetails" ofType="OD">
+            <result property="productCode" column="productCode" />
+            <result property="orderdetailscol" column="orderdetailscol" />
+            <result property="quantityOrdered" column="quantityOrdered" />
+            <result property="priceEach" column="priceEach" />
+            <result property="orderLineNumber" column="orderLineNumber" />
+            <association property="product" javaType="PRODUCT">
+                <result property="productCode" column="productCode" />
+                <result property="productName" column="productName" />
+                <result property="productLine" column="productLine" />
+                <result property="productScale" column="productScale" />
+                <result property="productVendor" column="productVendor" />
+                <result property="productDescription" column="productDescription" />
+                <result property="quantityInStock" column="quantityInStock" />
+                <result property="buyPrice" column="buyPrice" />
+                <result property="MSRP" column="MSRP" />
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="list" parameterType="int" resultMap="map">
+        SELECT * FROM orders where customerNumber=#{value}
+        <!--SELECT * FROM orders o,orderdetails od where customerNumber=#{value} and od.orderNumber=o.orderNumber-->
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="map">
+        SELECT * FROM orders o left join customers c on c.customerNumber=o.customerNumber
+        left join orderdetails od on od.orderNumber=o.orderNumber left join products p on p.productCode=od.productCode
+        <!--left join payments pm ON c.customerNumber=pm.customerNumber -->
+        WHERE o.orderNumber = #{value}
+    </select>
+
+    <insert id="create" parameterType="ORDER" useGeneratedKeys="true" keyProperty="orderNumber">
+        INSERT INTO orders (orderDate,requiredDate,shippedDate,status,comments,customerNumber)
+        VALUES(#{orderDate},#{requiredDate},#{shippedDate},#{status},#{comments},#{customerNumber});
+    </insert>
+
+    <insert id="createDetails" parameterType="java.util.List">
+        INSERT INTO orderdetails (orderNumber,productCode,quantityOrdered,priceEach,orderLineNumber) VALUES
+        <foreach collection ="list" item="orderDetail" separator=",">
+            ( #{orderDetail.orderNumber}, #{orderDetail.productCode}, #{orderDetail.quantityOrdered}, #{orderDetail.priceEach}, #{orderDetail.orderLineNumber} )
+        </foreach >
+    </insert>
+
+    <update id="update" parameterType="ORDER">
+        UPDATE orders SET
+        shippedDate=#{shippedDate},
+        status=#{status},
+        comments=#{comments}
+        WHERE orderNumber=#{orderNumber}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM orders WHERE orderNumber = #{value}
+    </delete>
+
+    <delete id="deleteDetails" parameterType="int">
+        DELETE FROM orderdetails WHERE orderNumber = #{value}
+    </delete>
+
+</mapper>

@@ -11,7 +11,7 @@
     <modules>
         <module>lghr-common</module>
         <module>lghr-domain</module>
-        <module>lghr-camel</module>
+        <module>lghr-service</module>
     </modules>
 
     <properties>
@@ -27,7 +27,7 @@
         <modules>
             <module>lghr-common</module>
             <module>lghr-domain</module>
-            <module>lghr-camel</module>
+            <module>lghr-service</module>
         </modules>
         <properties>
             <project>all</project>
