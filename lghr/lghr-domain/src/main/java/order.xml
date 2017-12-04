@@ -52,7 +52,7 @@
         </collection>
     </resultMap>
 
-    <select id="list" parameterType="int" resultMap="map">
+    <select id="list" parameterType="int" resultType="ORDER">
         SELECT * FROM orders where customerNumber=#{value}
         <!--SELECT * FROM orders o,orderdetails od where customerNumber=#{value} and od.orderNumber=o.orderNumber-->
     </select>

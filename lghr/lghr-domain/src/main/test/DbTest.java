@@ -67,7 +67,6 @@ public class DbTest {
     public void testOrder() throws Exception {
         OrderDao manager = new OrderImpl();
 
-        int key = Math.abs(new Random().nextInt());
         Order o = new Order();
 //        Customer c = new Customer();
 //        c.setCustomerNumber(103);
@@ -78,14 +77,12 @@ public class DbTest {
         o.setStatus("aaa");
 
         OrderDetail od = new OrderDetail();
-        od.setOrderNumber(key);
         od.setPriceEach(1.2);
         od.setProductCode("abc1");
         od.setQuantityOrdered(2);
         o.addOrderDetail(od);
 
         OrderDetail od2 = new OrderDetail();
-        od2.setOrderNumber(key);
         od2.setPriceEach(1.22);
         od2.setProductCode("abc");
         od2.setQuantityOrdered(3);
@@ -99,12 +96,12 @@ public class DbTest {
         List<Order> os = manager.list("103");
         os.stream().map(p-> JsonHelper.toJson(p)).forEach(System.out::println);
 
-        Order oo = manager.getById(key + "");
+        Order oo = manager.getById(o.getOrderNumber() + "");
         System.out.println(oo.getStatus());
         oo = manager.getById("10345");
         System.out.println(JsonHelper.toJson(oo));
 
-        manager.deleteById(key + "");
+        manager.deleteById(o.getOrderNumber() + "");
     }
 
 }
