@@ -36,6 +36,20 @@ public class CustomerImpl extends BasePOJO implements CustomerDao {
     }
 
     @Override
+    public Customer createAndGetByExId(Customer cust) throws Exception {
+
+        SqlSession s = client.openSession(true);
+        Customer ret = s.selectOne("ns.customer.getByExid", cust.getExternalId());
+        if(ret == null){
+            s.insert("ns.customer.create", cust);
+            ret = cust;
+        }
+
+        s.close();
+        return ret;
+    }
+
+    @Override
     public List<Customer> list(String kw) throws Exception {
         SqlSession s = client.openSession(true);
         List<Customer> ret = s.selectList("ns.customer.list");

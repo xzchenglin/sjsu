@@ -61,6 +61,15 @@ public class DbTest {
 
         List<Customer> ps = manager.list(null);
         ps.stream().map(p-> JsonHelper.toJson(p)).forEach(System.out::println);
+
+        o = new Customer();
+        o.setCity("ccc");
+        o.setCustomerName("ddd");
+        o.setCreditLimit(1.1);
+        o.setExternalId("a@b.com");
+
+        pp = manager.createAndGetByExId(o);
+        System.out.println(JsonHelper.toJson(pp));
     }
 
     @Test

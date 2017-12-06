@@ -19,6 +19,7 @@
         <result property="country" column="country" />
         <result property="state" column="state" />
         <result property="creditLimit" column="creditLimit" />
+        <result property="externalId" column="externalId" />
         <collection property="orders" ofType="ORDER">
             <id column="orderNumber" property="orderNumber"/>
             <result property="orderDate" column="orderDate" />
@@ -44,9 +45,14 @@
         WHERE c.customerNumber = #{value}
     </select>
 
+    <select id="getByExid" parameterType="String" resultType="CUSTOMER">
+        SELECT * FROM customers
+        WHERE externalId = #{value}
+    </select>
+
     <insert id="create" parameterType="CUSTOMER" useGeneratedKeys="true" keyProperty="customerNumber">
-        INSERT INTO customers (customerName,contactLastName,contactFirstName,phone,addressLine1,addressLine2,city,state,postalCode,country,creditLimit)
-        VALUES(#{customerName},#{contactLastName},#{contactFirstName},#{phone},#{addressLine1},#{addressLine2},#{city},#{state},#{postalCode},#{country},#{creditLimit});
+        INSERT INTO customers (customerName,contactLastName,contactFirstName,phone,addressLine1,addressLine2,city,state,postalCode,country,creditLimit,externalId)
+        VALUES(#{customerName},#{contactLastName},#{contactFirstName},#{phone},#{addressLine1},#{addressLine2},#{city},#{state},#{postalCode},#{country},#{creditLimit},#{externalId});
     </insert>
 
     <update id="update" parameterType="CUSTOMER">

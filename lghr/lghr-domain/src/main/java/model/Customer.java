@@ -9,6 +9,7 @@ public class Customer {
     }
 
     int customerNumber;
+    String externalId;
     String customerName;
     String contactLastName;
     String contactFirstName;
@@ -134,5 +135,13 @@ public class Customer {
 
     public void setCreditLimit(double creditLimit) {
         this.creditLimit = creditLimit;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 }
