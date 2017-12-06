@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /***
  *Created by Lin Cheng
  */
-abstract class GetProcessor implements Processor {
+abstract class UrlProcessor implements Processor {
 
     protected Map<String, String> paramMap;
 

@@ -6,7 +6,7 @@ import vm.OpenstackController;
 /***
  *Created by Lin Cheng
  */
-public class OpProcessor extends GetProcessor {
+public class OpProcessor extends UrlProcessor {
     @Override
     String handle() {
         switch (paramMap.get("type")){

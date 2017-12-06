@@ -6,7 +6,7 @@ import vm.OpenstackController;
 /***
  *Created by Lin Cheng
  */
-public class ListProcessor extends GetProcessor {
+public class ListProcessor extends UrlProcessor {
     @Override
     String handle() {
 
