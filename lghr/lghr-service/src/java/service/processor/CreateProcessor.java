@@ -1,10 +1,10 @@
 package service.processor;
 
 import common.JsonHelper;
-import db.BaseDao;
-import db.CustomerImpl;
-import db.OrderImpl;
-import db.ProductImpl;
+import dao.BaseDao;
+import dao.CustomerImpl;
+import dao.OrderImpl;
+import dao.ProductImpl;
 import model.Customer;
 import model.Order;
 import model.Product;

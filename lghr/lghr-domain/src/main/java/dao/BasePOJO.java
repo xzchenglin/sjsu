@@ -1,4 +1,4 @@
-package db;
+package dao;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;

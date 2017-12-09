@@ -1,7 +1,6 @@
-package db;
+package dao;
 
 import model.Order;
-import model.OrderDetail;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;

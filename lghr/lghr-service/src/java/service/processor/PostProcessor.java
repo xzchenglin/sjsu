@@ -2,6 +2,7 @@ package service.processor;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -18,13 +19,14 @@ import java.util.stream.Collectors;
 abstract class PostProcessor implements Processor {
 
     protected String body = "";
-    protected Map<String, String> paramMap;
+    protected Map<String, String> paramMap = new HashMap<>();
 
     @Override
     public void process(Exchange exchange) throws Exception {
         InputStream inputStream = exchange.getIn().getBody(InputStream.class);
         try {
             body = "";
+            paramMap = new HashMap<>();
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
@@ -34,7 +36,9 @@ abstract class PostProcessor implements Processor {
             body = body.trim();
 
             String params = exchange.getIn().getHeader("CamelHttpQuery") + "";
-            paramMap = Arrays.stream(params.split("&")).map(s->s.split("=")).collect(Collectors.toMap(a->a[0], a->a[1]));
+            if(StringUtils.isNotBlank(params) && !"null".equalsIgnoreCase(params)) {
+                paramMap = Arrays.stream(params.split("&")).map(s -> s.split("=")).collect(Collectors.toMap(a -> a[0], a -> a[1]));
+            }
 
             String resp = handle();
 

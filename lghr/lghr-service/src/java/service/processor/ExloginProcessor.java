@@ -1,10 +1,8 @@
 package service.processor;
 
 import common.JsonHelper;
-import db.*;
+import dao.*;
 import model.Customer;
-import model.Order;
-import model.Product;
 
 /***
  *Created by Lin Cheng

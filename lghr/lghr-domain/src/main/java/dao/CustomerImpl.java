@@ -1,4 +1,4 @@
-package db;
+package dao;
 
 import model.Customer;
 import org.apache.ibatis.session.SqlSession;
