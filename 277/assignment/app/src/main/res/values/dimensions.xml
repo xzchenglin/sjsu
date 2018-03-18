@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources>
-    <dimen name="font_large">44dp</dimen>
-    <dimen name="font_medium">24dp</dimen>
-    <dimen name="font_small">10dp</dimen>
+    <dimen name="font_large">28dp</dimen>
+    <dimen name="font_medium">18dp</dimen>
+    <dimen name="font_small">14dp</dimen>
 </resources>
