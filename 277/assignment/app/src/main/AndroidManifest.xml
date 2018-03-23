@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sjsu.lin.hw">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name="com.sjsu.lin.hw.ActivityMain" android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.sjsu.lin.hw.ActivityAccelerometer" android:windowSoftInputMode="stateHidden"  />
+        <activity android:name="com.sjsu.lin.hw.ActivityCurrency" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name="com.sjsu.lin.hw.ActivitySql" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name="com.sjsu.lin.hw.ActivityDownload" android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name="com.sjsu.lin.hw.DialogCurrency"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+
+        <receiver android:name="com.sjsu.lin.hw.ActivityCurrency$OutReceiver">
+            <intent-filter>
+                <action android:name="com.sjsu.lin.hw.intent.output"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.sjsu.lin.hw.DialogCurrency$InputReceiver">
+            <intent-filter>
+                <action android:name="com.sjsu.lin.hw.intent.input"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.DownloadService"
+            android:exported="false"/>
+
+    </application>
+
+</manifest>

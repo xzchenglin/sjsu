@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="currency">
+        <item>British Pound</item>
+        <item>Euro</item>
+        <item>Indian Rupee</item>
+    </string-array>
+    <string-array name="currencyRate">
+        <item>0.71</item>
+        <item>0.81</item>
+        <item>64.39</item>
+    </string-array>
+</resources>

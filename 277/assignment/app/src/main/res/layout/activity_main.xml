@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_green"
+    android:padding="8dip"
+    >
+
+    <TextView android:layout_width="match_parent"
+        android:id="@+id/text1"
+        android:layout_height="wrap_content"
+        android:text="Hello"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/font_large"
+        android:textColor="@color/light_green"
+        android:paddingBottom="16dip"
+        />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <Button
+            android:id="@+id/btn_start_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:onClick="start1"
+            android:text="Accelerometer" />
+
+        <Button
+            android:id="@+id/btn_start_dialog"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Sql"
+            android:layout_toRightOf="@id/btn_start_b"
+            android:onClick="start2"
+            />
+
+        <Button
+            android:id="@+id/btn_start_ring"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/btn_start_dialog"
+            android:text="Download"
+            android:onClick="start3"
+            />
+
+    </RelativeLayout>
+
+    <Space android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <TextView
+        android:id="@+id/cnt_view_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:padding="4dip"
+        android:typeface="monospace"
+        />
+
+    <Space android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <Button
+        android:id="@+id/btn_finish_a"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/btn_finish_a_label"
+        android:onClick="finishActivityA"
+        />
+
+</LinearLayout>
