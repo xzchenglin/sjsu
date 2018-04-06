@@ -1,0 +1,305 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.9
+-- Dumped by pg_dump version 9.3.1
+-- Started on 2015-12-21 14:22:25 PST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 255 (class 1259 OID 210899)
+-- Name: dragon_group; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_group (
+    name character varying NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    preference character varying(5096),
+    id bigint NOT NULL,
+    no_approve boolean DEFAULT true NOT NULL,
+    alias character varying
+);
+
+
+ALTER TABLE public.dragon_group OWNER TO ambari;
+
+--
+-- TOC entry 257 (class 1259 OID 210934)
+-- Name: dragon_group_rest; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_group_rest (
+    g_id bigint NOT NULL,
+    res_id bigint NOT NULL,
+    factor bigint DEFAULT 10 NOT NULL
+);
+
+
+ALTER TABLE public.dragon_group_rest OWNER TO ambari;
+
+--
+-- TOC entry 256 (class 1259 OID 210920)
+-- Name: dragon_group_user; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_group_user (
+    g_id bigint NOT NULL,
+    u_id bigint NOT NULL,
+    admin boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.dragon_group_user OWNER TO ambari;
+
+--
+-- TOC entry 252 (class 1259 OID 210849)
+-- Name: dragon_record; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_record (
+    id bigint NOT NULL,
+    res_id bigint NOT NULL,
+    go_time bigint,
+    veto boolean DEFAULT false NOT NULL,
+    g_id bigint
+);
+
+
+ALTER TABLE public.dragon_record OWNER TO ambari;
+
+--
+-- TOC entry 250 (class 1259 OID 210814)
+-- Name: dragon_restaurant; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_restaurant (
+    name character varying NOT NULL,
+    link character varying,
+    factor bigint DEFAULT 5 NOT NULL,
+    id bigint NOT NULL,
+    alias character varying,
+    category character varying
+);
+
+
+ALTER TABLE public.dragon_restaurant OWNER TO ambari;
+
+--
+-- TOC entry 258 (class 1259 OID 210986)
+-- Name: dragon_schedule; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_schedule (
+    id bigint NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    type character varying NOT NULL,
+    gid bigint NOT NULL,
+    cron character varying NOT NULL,
+    param character varying,
+    modified bigint
+);
+
+
+ALTER TABLE public.dragon_schedule OWNER TO ambari;
+
+--
+-- TOC entry 254 (class 1259 OID 210888)
+-- Name: dragon_secret; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_secret (
+    name character varying,
+    value character varying,
+    u_id bigint
+);
+
+
+ALTER TABLE public.dragon_secret OWNER TO ambari;
+
+--
+-- TOC entry 251 (class 1259 OID 210838)
+-- Name: dragon_user; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_user (
+    id bigint NOT NULL,
+    email character varying NOT NULL,
+    name character varying
+);
+
+
+ALTER TABLE public.dragon_user OWNER TO ambari;
+
+--
+-- TOC entry 253 (class 1259 OID 210860)
+-- Name: dragon_vote; Type: TABLE; Schema: public; Owner: ambari; Tablespace:
+--
+
+CREATE TABLE dragon_vote (
+    rec_id bigint NOT NULL,
+    vote integer NOT NULL,
+    email character varying NOT NULL,
+    ip character varying
+);
+
+
+ALTER TABLE public.dragon_vote OWNER TO ambari;
+
+--
+-- TOC entry 2980 (class 2606 OID 210821)
+-- Name: dr_id; Type: CONSTRAINT; Schema: public; Owner: ambari; Tablespace:
+--
+
+ALTER TABLE ONLY dragon_restaurant
+    ADD CONSTRAINT dr_id PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2986 (class 2606 OID 210919)
+-- Name: dragon_group_pkey; Type: CONSTRAINT; Schema: public; Owner: ambari; Tablespace:
+--
+
+ALTER TABLE ONLY dragon_group
+    ADD CONSTRAINT dragon_group_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2988 (class 2606 OID 210994)
+-- Name: dragon_schedule_pkey; Type: CONSTRAINT; Schema: public; Owner: ambari; Tablespace:
+--
+
+ALTER TABLE ONLY dragon_schedule
+    ADD CONSTRAINT dragon_schedule_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2984 (class 2606 OID 210853)
+-- Name: rec_key; Type: CONSTRAINT; Schema: public; Owner: ambari; Tablespace:
+--
+
+ALTER TABLE ONLY dragon_record
+    ADD CONSTRAINT rec_key PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2982 (class 2606 OID 210846)
+-- Name: user_key; Type: CONSTRAINT; Schema: public; Owner: ambari; Tablespace:
+--
+
+ALTER TABLE ONLY dragon_user
+    ADD CONSTRAINT user_key PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2996 (class 2606 OID 210937)
+-- Name: dragon_group_rest_g_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_group_rest
+    ADD CONSTRAINT dragon_group_rest_g_id_fkey FOREIGN KEY (g_id) REFERENCES dragon_group(id);
+
+
+--
+-- TOC entry 2995 (class 2606 OID 210942)
+-- Name: dragon_group_rest_r_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_group_rest
+    ADD CONSTRAINT dragon_group_rest_r_id_fkey FOREIGN KEY (res_id) REFERENCES dragon_restaurant(id);
+
+
+--
+-- TOC entry 2994 (class 2606 OID 210924)
+-- Name: dragon_group_user_g_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_group_user
+    ADD CONSTRAINT dragon_group_user_g_id_fkey FOREIGN KEY (g_id) REFERENCES dragon_group(id);
+
+
+--
+-- TOC entry 2993 (class 2606 OID 210929)
+-- Name: dragon_group_user_u_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_group_user
+    ADD CONSTRAINT dragon_group_user_u_id_fkey FOREIGN KEY (u_id) REFERENCES dragon_user(id);
+
+
+--
+-- TOC entry 2989 (class 2606 OID 210947)
+-- Name: dragon_record_g_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_record
+    ADD CONSTRAINT dragon_record_g_id_fkey FOREIGN KEY (g_id) REFERENCES dragon_group(id);
+
+
+--
+-- TOC entry 2997 (class 2606 OID 210995)
+-- Name: dragon_schedule_gid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_schedule
+    ADD CONSTRAINT dragon_schedule_gid_fkey FOREIGN KEY (gid) REFERENCES dragon_group(id);
+
+
+--
+-- TOC entry 2990 (class 2606 OID 210854)
+-- Name: fkey_rec_res; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_record
+    ADD CONSTRAINT fkey_rec_res FOREIGN KEY (res_id) REFERENCES dragon_restaurant(id);
+
+
+--
+-- TOC entry 2991 (class 2606 OID 210868)
+-- Name: fkey_vote_rec; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_vote
+    ADD CONSTRAINT fkey_vote_rec FOREIGN KEY (rec_id) REFERENCES dragon_record(id);
+
+
+--
+-- TOC entry 2992 (class 2606 OID 210894)
+-- Name: sec_user; Type: FK CONSTRAINT; Schema: public; Owner: ambari
+--
+
+ALTER TABLE ONLY dragon_secret
+    ADD CONSTRAINT sec_user FOREIGN KEY (u_id) REFERENCES dragon_user(id);
+
+
+-- Sequence: dragon_id_sec
+
+-- DROP SEQUENCE dragon_id_sec;
+
+CREATE SEQUENCE dragon_id_sec
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1000
+  CACHE 1;
+ALTER TABLE dragon_id_sec
+  OWNER TO ambari;
+
+-- Completed on 2015-08-07 17:13:13 PDT
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,5 @@
+dbserver=ambari.cfcktxhbpkfb.us-east-1.rds.amazonaws.com
+dbport=5432
+db=ambari
+dbuser=ambari
+dbpwd=xxxxxx
