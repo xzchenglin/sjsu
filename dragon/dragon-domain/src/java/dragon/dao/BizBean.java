@@ -246,17 +246,12 @@ public class BizBean implements BizDao {
                 }
 
                 try {
-                    Restaurant rr = ds.find(r.getName());
-                    if(rr == null){
+                    if(ds.checkOpen(r.getName())){
                         return r;
-                    }
-                    if(rr.getOpen() != null && rr.getOpen() == false){
+                    } else {
                         logger.info("Currently closed: " + r.getAlias());
                         list.remove(r);
                         return pickFrom(list, preIds, gid);
-                    } else {
-                        r.setLink(rr.getLink());
-                        r.setAlias(rr.getAlias());
                     }
                 } catch (Exception e) {
                     logger.error("", e);

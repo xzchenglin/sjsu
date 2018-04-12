@@ -10,5 +10,5 @@ import java.util.List;
 public interface DsRetriever {
     Restaurant addByBid(Long gid, String bid)throws Exception;
     List<Restaurant> searchAndImport(Long gid)throws Exception;
-    Restaurant find(String bid)throws Exception;
+    boolean checkOpen(String bid)throws Exception;
 }

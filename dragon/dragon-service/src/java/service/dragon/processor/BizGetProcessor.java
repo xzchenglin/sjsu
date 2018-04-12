@@ -33,9 +33,14 @@ public class BizGetProcessor extends GetProcessor {
                 Restaurant r = dao.pickRestaurant(Long.parseLong(paramMap.get("gid")));
                 return JSONHelper.toJson(r);
 
+            case "del":
+                gb.removeRestaurantFromGroup(Long.parseLong(paramMap.get("rid")), Long.parseLong(paramMap.get("gid")));
+                return JSONHelper.toJson("OK");
+
             case "vote":
                 Vote.Result res = Vote.Result.values()[Integer.parseInt(paramMap.get("vote"))];
                 Vote v = new Vote();
+                v.setEmail(paramMap.get("mail"));
                 v.setRecId(Long.parseLong(paramMap.get("id")));
                 v.setResult(res);
                 r = dao.vote(v, (Boolean.parseBoolean(paramMap.get("mute"))));

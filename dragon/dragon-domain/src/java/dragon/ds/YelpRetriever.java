@@ -230,8 +230,18 @@ public class YelpRetriever implements DsRetriever {
     }
 
     @Override
-    public Restaurant find(String bid) throws Exception {
-        throw new NotImplementedException();
+    public boolean checkOpen(String bid) throws Exception {
+        YelpAPI ya = new YelpAPI();
+        String json = ya.searchByBusinessId(bid);
+        JSONParser parser = new JSONParser();
+        JSONObject bo = null;
+        try {
+            bo = (JSONObject) parser.parse(json);
+            return !(Boolean)bo.get("is_closed");
+        } catch (ParseException pe) {
+            logger.error("Error: could not parse JSON response:" + json);
+            return true;
+        }
     }
 
     public Restaurant addByBid(Long gid, String bid)throws Exception{
