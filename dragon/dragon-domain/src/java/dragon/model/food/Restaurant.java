@@ -16,6 +16,7 @@ public class Restaurant {
 
     //transit
     Boolean open;
+    Long recId;
 
     public Restaurant(String name, String link, Long factor, Long id, String alias, String category, String source) {
         this.name = name;
@@ -96,6 +97,14 @@ public class Restaurant {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Long getRecId() {
+        return recId;
+    }
+
+    public void setRecId(Long recId) {
+        this.recId = recId;
     }
 
     public Long getFactor() {

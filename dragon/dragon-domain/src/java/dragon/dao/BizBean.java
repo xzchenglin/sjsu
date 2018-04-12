@@ -191,7 +191,19 @@ public class BizBean implements BizDao {
         Long t3 = System.currentTimeMillis();
         logger.debug("stat takes: " + (t3 - t2));
 
-        return pickFrom(list, preIds, gid);
+        Restaurant r = pickFrom(list, preIds, gid);
+        if (r == null) {
+            logger.info("Biz not found.");
+            return null;
+        }
+
+        Record rec = new Record();
+        rec.setResid(r.getId());
+        rec.setgId(gid);
+        Long id = saveRecord(rec).getId();
+        r.setRecId(id);
+
+        return r;
     }
 
     private Restaurant pickFrom(List<Restaurant> list, List<Long> preIds, Long gid){

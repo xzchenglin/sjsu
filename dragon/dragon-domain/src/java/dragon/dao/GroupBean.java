@@ -79,14 +79,15 @@ public class GroupBean implements GroupDao {
         return cnt;
     }
 
-    public List<Group> getGroups(Long uid) {
+    public List<Group> getGroups(String mail) {
         Connection conn = null;
         List<Group> list = new ArrayList<Group>();
         try {
             conn = DbHelper.getConn();
             PreparedStatement st = null;
-            st = conn.prepareStatement("select * from dragon_group g inner join dragon_group_user gu on g.id=gu.g_id where gu.u_id=?");
-            DbHelper.setParameters(st, uid);
+            st = conn.prepareStatement("select * from dragon_group g, dragon_group_user gu, dragon_user u " +
+                    "where g.id=gu.g_id and u.id=gu.u_id and u.email=?");
+            DbHelper.setParameters(st, mail);
 
             ResultSet rs = st.executeQuery();
 
@@ -348,6 +349,9 @@ public class GroupBean implements GroupDao {
 
         Map<String, Stat> stats =  eb.stat(gid, 0, true);
         g.setStats(stats);
+
+        List<Restaurant> rests = eb.getRestaurants(gid);
+        g.setRestaurants(rests);
 
         if(isMember()) {
             List<User> users = getUsers(gid);

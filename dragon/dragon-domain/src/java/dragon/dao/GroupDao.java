@@ -24,7 +24,7 @@ public interface GroupDao extends Dao {
     Restaurant addByBizId(String yid, Long gid)throws Exception;
     Boolean subscribe(String email, Long gid, boolean sub)throws Exception;
     Boolean subscribe(String email, Long gid, boolean sub, boolean admin)throws Exception;
-    List<Group> getGroups(Long uid);
+    List<Group> getGroups(String mail);
     Group getGroup(Pair<String, Object> p);
     Long saveUser(User u, boolean reg)throws Exception;
     void loadDependencies(Group g, int limit) throws Exception;

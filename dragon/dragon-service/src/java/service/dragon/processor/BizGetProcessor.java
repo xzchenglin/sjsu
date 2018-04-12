@@ -21,7 +21,13 @@ public class BizGetProcessor extends GetProcessor {
     String handle() throws Exception {
 
         BizDao dao = Daos.get(BizDao.class);
+        GroupDao gb = Daos.get(GroupDao.class);
+
         switch (path){
+
+            case "user":
+                List<Group> list = gb.getGroups(paramMap.get("mail"));
+                return JSONHelper.toJson(list);
 
             case "pick":
                 Restaurant r = dao.pickRestaurant(Long.parseLong(paramMap.get("gid")));
@@ -40,7 +46,6 @@ public class BizGetProcessor extends GetProcessor {
                 return JSONHelper.toJson(ss);
 
             case "group":
-                GroupDao gb = Daos.get(GroupDao.class);
                 Group g = gb.getGroup(new Pair<>("name", paramMap.get("key")));
                 gb.loadDependencies(g, 100);
                 return JSONHelper.toJson(g);

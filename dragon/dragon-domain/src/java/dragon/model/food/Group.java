@@ -20,6 +20,7 @@ public class Group {
     Map<String, Stat> stats;
     List<User> users;
     List<Record> records;
+    List<Restaurant> restaurants;
 
     public Group(String name, String preference) {
         this.name = name;
@@ -135,5 +136,13 @@ public class Group {
 
     public void setRecords(List<Record> records) {
         this.records = records;
+    }
+
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 }
