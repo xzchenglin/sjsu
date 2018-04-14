@@ -19,7 +19,9 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by lin.cheng
@@ -313,6 +315,11 @@ public class YelpRetriever implements DsRetriever {
             yaCli.location = location;
         }
         if (StringUtils.isNotBlank(category)) {
+            if(category.contains("india")){
+                String[] strs = category.split(",");
+                category = Arrays.stream(strs).filter(s -> s.contains("india"))
+                        .map(s -> s="indpak").collect(Collectors.joining(","));
+            }
             yaCli.cat = category;
         }
         if (StringUtils.isNotBlank(distance)) {
