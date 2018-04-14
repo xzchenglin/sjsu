@@ -123,10 +123,9 @@ public class BizBean implements BizDao {
             }
 
             return r;
-        } else {
-            logger.info("Already vetoed or time passed.");
-            return null;
         }
+
+        return res;
     }
 
 

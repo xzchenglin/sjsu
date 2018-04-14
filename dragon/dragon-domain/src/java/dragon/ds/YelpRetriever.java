@@ -237,7 +237,11 @@ public class YelpRetriever implements DsRetriever {
         JSONObject bo = null;
         try {
             bo = (JSONObject) parser.parse(json);
-            return !(Boolean)bo.get("is_closed");
+            if(bo.get("is_closed") == null){
+                return true;
+            } else{
+                return !(Boolean) bo.get("is_closed");
+            }
         } catch (ParseException pe) {
             logger.error("Error: could not parse JSON response:" + json);
             return true;
