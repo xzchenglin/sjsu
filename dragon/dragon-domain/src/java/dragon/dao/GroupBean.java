@@ -69,6 +69,7 @@ public class GroupBean implements GroupDao {
         DsRetriever dr = new YelpRetriever(g.getPreference());
         try {
             List<Restaurant> ret = dr.searchAndImport(g.getId());
+            g.setRestaurants(ret);
             if(ret != null) {
                 cnt = ret.size();
             }

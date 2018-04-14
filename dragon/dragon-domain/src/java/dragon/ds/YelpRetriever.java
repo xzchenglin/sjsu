@@ -132,7 +132,7 @@ public class YelpRetriever implements DsRetriever {
 
         int cnt = 0;
 
-        for (int i = 0; i < 3; i++) {//max = 200
+        for (int i = 0; i < 5; i++) {//max = 100
             yaCli.offset = 20 * i;
             String json = YelpAPI.queryAPI(ya, yaCli);
 
@@ -279,7 +279,7 @@ public class YelpRetriever implements DsRetriever {
     }
 
     private void applySettings(String settings){
-        String[] ss = settings.split(";");
+        String[] ss = settings.toLowerCase().split(";");
         for (String s : ss){
             String key = StringUtils.trim(s.split("=")[0]);
             String value = StringUtils.trim(s.split("=")[1]);
