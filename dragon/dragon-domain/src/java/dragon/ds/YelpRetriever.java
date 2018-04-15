@@ -317,8 +317,7 @@ public class YelpRetriever implements DsRetriever {
         if (StringUtils.isNotBlank(category)) {
             if(category.contains("india")){
                 String[] strs = category.split(",");
-                category = Arrays.stream(strs).filter(s -> s.contains("india"))
-                        .map(s -> s="indpak").collect(Collectors.joining(","));
+                category = Arrays.stream(strs).map(s -> s.contains("india")?"indpak":s).collect(Collectors.joining(","));
             }
             yaCli.cat = category;
         }
