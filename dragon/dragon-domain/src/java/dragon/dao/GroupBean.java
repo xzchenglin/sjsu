@@ -13,10 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by lin.cheng
@@ -255,11 +253,13 @@ public class GroupBean implements GroupDao {
         }
     }
 
-    public int removeRestaurantFromGroup(Long rid, Long gid) throws Exception{
+    public int removeRestaurantsFromGroup(List<Long> rids, Long gid) throws Exception{
 
-        logger.info("Removing biz: " + rid + " -> " + gid);
+        String idsStr = rids.stream().map(l->"" + l).collect(Collectors.joining(","));
 
-        int cnt = DbHelper.runUpdate2(null, "delete from dragon_group_rest where g_id=? and res_id=?", gid, rid);
+        logger.info("Removing biz: " + idsStr + " -> " + gid);
+
+        int cnt = DbHelper.runUpdate2(null, "delete from dragon_group_rest where g_id=? and res_id in (" + idsStr + ")" , gid);
         return cnt;
     }
 

@@ -19,7 +19,7 @@ public interface GroupDao extends Dao {
     int saveRestaurantToGroup(Long rid, Long gid, Long factor)throws Exception;
     int saveRestaurantToGroupBatch(List<Pair> pair, Long gid) throws Exception;
     int saveRestaurantByName(Long rid, String gname, Long factor)throws Exception;
-    int removeRestaurantFromGroup(Long rid, Long gid)throws Exception;
+    int removeRestaurantsFromGroup(List<Long> rids, Long gid)throws Exception;
     int applyPreference(Group g);
     Restaurant addByBizId(String yid, Long gid)throws Exception;
     Boolean subscribe(String email, Long gid, boolean sub)throws Exception;

@@ -34,7 +34,7 @@ public class BizGetProcessor extends GetProcessor {
                 return JSONHelper.toJson(r);
 
             case "del":
-                gb.removeRestaurantFromGroup(Long.parseLong(paramMap.get("rid")), Long.parseLong(paramMap.get("gid")));
+                gb.removeRestaurantsFromGroup(JSONHelper.fromJsonForObjList(paramMap.get("rids"), Long.class), Long.parseLong(paramMap.get("gid")));
                 return JSONHelper.toJson("OK");
 
             case "vote":
