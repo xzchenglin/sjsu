@@ -22,7 +22,10 @@ public class SiteImpl extends BasePOJO implements SiteDao {
 
     @Override
     public Site find(String key) throws Exception {
-        throw new NotImplementedException();
+        SqlSession s = client.openSession(true);
+        Site ret = s.selectOne("ns.site.getById", key);
+        s.close();
+        return ret;
     }
 
     @Override

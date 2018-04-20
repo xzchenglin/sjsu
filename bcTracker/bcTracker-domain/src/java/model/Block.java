@@ -1,5 +1,7 @@
 package model;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Created by Lin Cheng
  */
@@ -15,5 +17,11 @@ public class Block {
         this.pid = pid;
         this.pukNext = pukNext;
         this.payload = payload;
+    }
+
+    public void sanityCheck() throws Exception {
+        if(StringUtils.isNotBlank(pid) || StringUtils.isBlank(pukNext) || StringUtils.isBlank(payload)){
+            throw new Exception("Invalid block.");
+        }
     }
 }

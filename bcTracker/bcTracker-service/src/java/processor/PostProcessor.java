@@ -51,7 +51,7 @@ abstract class PostProcessor implements Processor {
             map.put( "Access-Control-Allow-Methods","*" );
             exchange.getOut().setHeaders(map);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             exchange.getOut().setBody(e.getMessage());
         } finally {

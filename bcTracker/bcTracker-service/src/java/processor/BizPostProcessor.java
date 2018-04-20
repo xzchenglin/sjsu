@@ -9,6 +9,7 @@ import model.Block;
 import model.Chain;
 import model.Item;
 import model.Site;
+import org.omg.CORBA.portable.ApplicationException;
 
 /***
  *Created by Lin Cheng
@@ -24,6 +25,9 @@ public class BizPostProcessor extends PostProcessor {
             case "regsite":
                 Site site = JSONHelper.fromJson2(body, Site.class);
                 dao = new SiteImpl();
+                if(dao.find(site.getName()) != null){
+                    throw new Exception("Site name already exists.");
+                }
                 String pk = Utils.generateKeypair(site.getName());
                 site.setPubkey(pk);
                 dao.create(site);
@@ -34,6 +38,9 @@ public class BizPostProcessor extends PostProcessor {
                 Item item = JSONHelper.fromJson2(body, Item.class);
                 dao = new ItemImpl();
 
+                if(dao.find(item.getId()) != null){
+                    throw new Exception("Item ID already exists.");
+                }
                 Block b0 = new Block(item.getId(), item.getNextpubkey(), item.getPayload());
                 Chain chain = new Chain();
                 chain.append(b0);
@@ -47,7 +54,7 @@ public class BizPostProcessor extends PostProcessor {
                 dao = new ItemImpl();
                 Item ex = ((ItemImpl) dao).find(item2.getId());
                 if(ex == null){
-                    return "Chain not found.";
+                    throw new Exception("Chain not found.");
                 }
 
                 Chain c = JSONHelper.fromJson2(ex.getChain(), Chain.class);
@@ -60,8 +67,7 @@ public class BizPostProcessor extends PostProcessor {
                 return "Success";
 
             default:
-                return JSONHelper.toJson("Not supported.");
+                throw new Exception("Not supported.");
         }
-
     }
 }

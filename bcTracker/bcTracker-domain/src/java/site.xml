@@ -9,6 +9,10 @@
         SELECT * FROM bc_site
     </select>
 
+    <select id="getById" parameterType="java.lang.String" resultType="SITE">
+        SELECT * FROM bc_site WHERE name = #{value}
+    </select>
+
     <insert id="create" parameterType="SITE">
         INSERT INTO bc_site (name,pubkey,location)
         VALUES(#{name},#{pubkey},#{location});

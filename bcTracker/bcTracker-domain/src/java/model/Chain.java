@@ -20,6 +20,9 @@ public class Chain {
     }
 
     public Chain append(Block b) throws Exception{
+
+        b.sanityCheck();
+
         boolean ex = false;
         for (Block block:blocks){
             if(b.pid.equals(block.pid)){
@@ -34,16 +37,14 @@ public class Chain {
             currentPuk = prev.pukNext;
             String payload = Utils.rsaDec(b.payload, currentPuk);
             if(!StringUtils.equals(payload, Utils.md5(JSONHelper.toJson(prev)))){
-                System.out.println("payload not match!");
-                return null;
+                throw new Exception("payload not match!");
             }
             System.out.println(b.pid + ": " + currentPuk + "->" + b.pukNext);
         } else {
             currentPuk = b.pukNext;
             String payload = Utils.rsaDec(b.payload,currentPuk);
             if(!StringUtils.equals(payload, b.pid)){
-                System.out.println("Pid not match!");
-                return null;
+                throw new Exception("Pid not match!");
             }
             System.out.println(b.pid + ": " + currentPuk);
         }
