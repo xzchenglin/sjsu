@@ -1,4 +1,4 @@
-package model;
+package bc;
 
 import org.apache.commons.lang.StringUtils;
 

@@ -4,7 +4,7 @@ import dao.BaseDao;
 import dao.ItemImpl;
 import dao.SiteImpl;
 import helper.JSONHelper;
-import model.Chain;
+import bc.Chain;
 import model.Item;
 import model.Site;
 import org.apache.camel.Exchange;

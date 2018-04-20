@@ -1,4 +1,4 @@
-package model;
+package bc;
 
 import helper.JSONHelper;
 import helper.Utils;
@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Lin Cheng
@@ -23,13 +22,7 @@ public class Chain {
 
         b.sanityCheck();
 
-        boolean ex = false;
-        for (Block block:blocks){
-            if(b.pid.equals(block.pid)){
-                ex = true;
-                break;
-            }
-        }
+        boolean ex = blocks != null && blocks.size() > 0;
 
         String currentPuk = null;
         if(ex){

@@ -1,7 +1,7 @@
 import helper.JSONHelper;
 import helper.Utils;
-import model.Block;
-import model.Chain;
+import bc.Block;
+import bc.Chain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -1,5 +1,6 @@
 package model;
 
+import bc.Chain;
 import helper.JSONHelper;
 import helper.Utils;
 
