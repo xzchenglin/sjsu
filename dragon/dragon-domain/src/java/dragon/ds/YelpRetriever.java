@@ -19,7 +19,9 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by lin.cheng
@@ -132,7 +134,7 @@ public class YelpRetriever implements DsRetriever {
 
         int cnt = 0;
 
-        for (int i = 0; i < 3; i++) {//max = 200
+        for (int i = 0; i < 5; i++) {//max = 100
             yaCli.offset = 20 * i;
             String json = YelpAPI.queryAPI(ya, yaCli);
 
@@ -237,7 +239,11 @@ public class YelpRetriever implements DsRetriever {
         JSONObject bo = null;
         try {
             bo = (JSONObject) parser.parse(json);
-            return !(Boolean)bo.get("is_closed");
+            if(bo.get("is_closed") == null){
+                return true;
+            } else{
+                return !(Boolean) bo.get("is_closed");
+            }
         } catch (ParseException pe) {
             logger.error("Error: could not parse JSON response:" + json);
             return true;
@@ -279,7 +285,7 @@ public class YelpRetriever implements DsRetriever {
     }
 
     private void applySettings(String settings){
-        String[] ss = settings.split(";");
+        String[] ss = settings.toLowerCase().split(";");
         for (String s : ss){
             String key = StringUtils.trim(s.split("=")[0]);
             String value = StringUtils.trim(s.split("=")[1]);
@@ -309,6 +315,10 @@ public class YelpRetriever implements DsRetriever {
             yaCli.location = location;
         }
         if (StringUtils.isNotBlank(category)) {
+            if(category.contains("india")){
+                String[] strs = category.split(",");
+                category = Arrays.stream(strs).map(s -> s.contains("india")?"indpak":s).collect(Collectors.joining(","));
+            }
             yaCli.cat = category;
         }
         if (StringUtils.isNotBlank(distance)) {
