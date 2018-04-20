@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ns.site">
+
+    <select id="list" parameterType="model.Item" resultType="SITE">
+        SELECT * FROM bc_site
+    </select>
+
+    <insert id="create" parameterType="SITE">
+        INSERT INTO bc_site (name,pubkey,location)
+        VALUES(#{name},#{pubkey},#{location});
+    </insert>
+
+</mapper>

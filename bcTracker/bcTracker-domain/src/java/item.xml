@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ns.item">
+
+    <select id="list" parameterType="model.Item" resultType="ITEM">
+        SELECT * FROM bc_item
+    </select>
+
+    <select id="getById" parameterType="java.lang.String" resultType="ITEM">
+        SELECT * FROM bc_item WHERE id = #{value}
+    </select>
+
+    <select id="getByPk" parameterType="java.lang.String" resultType="ITEM">
+        SELECT * FROM bc_item WHERE nextpubkey = #{value}
+    </select>
+
+    <insert id="create" parameterType="ITEM">
+        INSERT INTO bc_item (id,name,nextpubkey,chain)
+        VALUES(#{id},#{name},#{nextpubkey},#{chain});
+    </insert>
+
+    <update id="update" parameterType="ITEM">
+        UPDATE bc_item SET
+        name=#{name},
+        nextpubkey=#{nextpubkey},
+        chain=#{chain}
+        WHERE id=#{id}
+    </update>
+
+</mapper>
