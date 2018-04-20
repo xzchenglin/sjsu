@@ -11,27 +11,12 @@
     <modules>
         <module>bcdemo-common</module>
         <module>bcdemo-domain</module>
+        <module>bcdemo-service</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <profiles>
-    <profile>
-        <id>all</id>
-        <activation>
-            <activeByDefault>true</activeByDefault>
-        </activation>
-        <modules>
-            <module>bcdemo-common</module>
-            <module>bcdemo-domain</module>
-        </modules>
-        <properties>
-            <project>all</project>
-        </properties>
-    </profile>
-    </profiles>
 
     <dependencies>
         <dependency>

@@ -1,3 +1,5 @@
+import helper.Utils;
+
 import static org.junit.Assert.assertNotNull;
 
 public class UtilsTest {

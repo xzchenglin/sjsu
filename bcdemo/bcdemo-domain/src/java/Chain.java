@@ -1,3 +1,5 @@
+import helper.JSONHelper;
+import helper.Utils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class Chain {
             Block prev = blocks.get(blocks.size()-1);
             currentPuk = prev.pukNext;
             String payload = Utils.rsaDec(b.payload, currentPuk);
-            if(!StringUtils.equals(payload, Utils.md5(JsonHelper.toJson(prev)))){
+            if(!StringUtils.equals(payload, Utils.md5(JSONHelper.toJson(prev)))){
                 System.out.println("payload not match!");
                 return null;
             }
@@ -42,7 +44,7 @@ public class Chain {
 
         blocks.add(b);
 
-        return Utils.md5(JsonHelper.toJson(b));
+        return Utils.md5(JSONHelper.toJson(b));
     }
 
 }

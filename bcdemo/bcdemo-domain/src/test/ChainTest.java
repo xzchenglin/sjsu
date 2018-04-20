@@ -1,3 +1,6 @@
+import helper.JSONHelper;
+import helper.Utils;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -13,7 +16,8 @@ public class ChainTest {
         Block b0 = new Block("111", pk, Utils.rsaEnc("111", "/opt/sjsu.key"));
         String ret = chain.append(b0);
 
-        for(int i=1; i<10; i++){
+        int n = 10;
+        for (int i = 1; i < n; i++) {
 
 //            //modify payload
 //            if(i==3){
@@ -26,9 +30,9 @@ public class ChainTest {
             System.out.println(ret);
         }
 
-        assertEquals(chain.getBlocks().size(), 10);
+        assertEquals(chain.getBlocks().size(), n);
 
-        System.out.println(JsonHelper.toJson(chain));
+        System.out.println(JSONHelper.toJson(chain));
     }
 
 }
