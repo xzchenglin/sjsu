@@ -20,7 +20,7 @@ public class Block {
     }
 
     public void sanityCheck() throws Exception {
-        if(StringUtils.isNotBlank(pid) || StringUtils.isBlank(pukNext) || StringUtils.isBlank(payload)){
+        if(StringUtils.isBlank(pid) || StringUtils.isBlank(pukNext) || StringUtils.isBlank(payload)){
             throw new Exception("Invalid block.");
         }
     }
