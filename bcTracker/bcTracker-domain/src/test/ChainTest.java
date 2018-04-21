@@ -5,13 +5,14 @@ import bc.Chain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ChainTest {
 
     @org.junit.Test
     public void append() throws Exception {
 
-        String pk = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsQiCSQRfAlQkKWyIoFWVcxT7yCgZWCi6C7Hob5qVaPej6DQQE4YJ6xEmTPAG6oeclj7G3rAFBTVasVH7Jncb8wlkqoptNmRRnALTvNiItAlMHm+JhqoHGOefxf49qUX+oQ7IthJ6PYJaH7eWNv/dtMPQEKvTl8c3U0jDiG/tlXDcYobuLOvMkjTRsLfzfZQW5j0fqpThnVMLn+512HQueU9FFPCfZJP/tpR6wizfUCIQWqGaIllyI4Tym4EARdoPGjYSa7re701/jcKFLOYFMqfO4HB0ofNBWb3znKGDZzbEf4E2yARK/tVCVVIXX1noNQBZYWhfFmvMR1TR4QXMawIDAQAB";
+        String pk = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtUorNTGKteO9BDJqcCXXyGP9kJMUrzwUbhFXcxkysI/7dBeKFKz8u5sFJtQHbJLvNjG4CZre+G3wmLefmH0yu4Y5UT7uRzbH0g8qEaxcvgx+6icfStlY+fPetDs2OyJPv3vUa2spFK7U7drNuopmaUPuqg41EMnbomtkG4bIr+X9aJQQh81/KeAw6TICrIeJJujrjS2mSd3Lntw3mym2ASSfbAStbzuZ7ZwwFCt/UBauoRG/LP99QqXFQQwC+GsGKZ8yeKVIU8SIsKrgLIGz0ez8pUnMtqZDSl5AX6ctv789kPRxmYhx78hcMPnRa1EDHn4FL/Kmi97Wl9ww5E52EwIDAQAB";
 
         Chain chain = new Chain();
 
@@ -33,6 +34,8 @@ public class ChainTest {
         }
 
         assertEquals(chain.getBlocks().size(), n);
+
+        assertTrue(chain.verify());
 
         System.out.println(JSONHelper.toJson(chain));
     }

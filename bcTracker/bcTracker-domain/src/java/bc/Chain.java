@@ -54,4 +54,26 @@ public class Chain {
         return blocks.get(blocks.size()-1);
     }
 
+    public boolean verify(){
+        if(blocks == null || blocks.size()<2){
+            return true;
+        }
+        for(int i=1; i<blocks.size(); i++){
+            Block current = blocks.get(i);
+            Block prev = blocks.get(i-1);
+
+            try{
+                String payload = Utils.rsaDec(current.payload, prev.pukNext);
+                if(!StringUtils.equals(payload, Utils.md5(JSONHelper.toJson(prev)))){
+                    return false;
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

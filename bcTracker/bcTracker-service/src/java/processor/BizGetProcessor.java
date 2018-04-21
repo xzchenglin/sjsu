@@ -35,7 +35,11 @@ public class BizGetProcessor extends GetProcessor {
                 List<String> keys = new ArrayList<>();
                 if(item != null) {
                     Chain c = JSONHelper.fromJson2(item.getChain(), Chain.class);
-                    keys = c.getBlocks().stream().map(b -> b.pukNext).collect(Collectors.toList());
+                    if(c.verify()) {
+                        keys = c.getBlocks().stream().map(b -> b.pukNext).collect(Collectors.toList());
+                    } else {
+                        throw new Exception("Failed to verify chain.");
+                    }
                 }
 
                 return JSONHelper.toJson(keys);
