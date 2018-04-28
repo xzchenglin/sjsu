@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ns.school">
+
+    <resultMap id="map" type="SCHOOL">
+        <id column="id" property="id"/>
+        <result property="name" column="name" />
+        <collection property="groups" ofType="GROUP">
+            <id column="id" property="id"/>
+            <result property="name" column="name" />
+        </collection>
+    </resultMap>
+
+    <select id="list" parameterType="java.lang.String" resultType="SCHOOL">
+        SELECT * FROM an_school
+        <where>
+            <if test="value != null">
+                lower(name) like #{value}
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="SCHOOL">
+        SELECT * FROM an_school s left join an_group g on s.id=g.sid
+        WHERE s.id = #{value}
+    </select>
+
+    <insert id="create" parameterType="SCHOOL" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            SELECT CAST(nextval('dragon_id_sec') as INTEGER)
+        </selectKey>
+        INSERT INTO an_school (id,name)
+        VALUES(#{id},#{name});
+    </insert>
+
+    <update id="update" parameterType="SCHOOL">
+        UPDATE an_school SET
+        name=#{name}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM an_school WHERE id = #{value}
+    </delete>
+
+</mapper>
