@@ -245,7 +245,7 @@ public class BizBean implements BizDao {
                 }
 
                 try {
-                    if(ds.checkOpen(r.getName())){
+                    if(ds.checkAndFill(r)){
                         return r;
                     } else {
                         logger.info("Currently closed: " + r.getAlias());

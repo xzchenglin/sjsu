@@ -17,6 +17,7 @@ public class Restaurant {
     //transit
     Boolean open;
     Long recId;
+    Integer distance;
 
     public Restaurant(String name, String link, Long factor, Long id, String alias, String category, String source) {
         this.name = name;
@@ -62,6 +63,14 @@ public class Restaurant {
 
     public void setOpen(Boolean open) {
         this.open = open;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
     public Long getId() {

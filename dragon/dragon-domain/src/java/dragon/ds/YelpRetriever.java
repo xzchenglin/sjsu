@@ -232,13 +232,16 @@ public class YelpRetriever implements DsRetriever {
     }
 
     @Override
-    public boolean checkOpen(String bid) throws Exception {
+    public boolean checkAndFill(final Restaurant r) throws Exception {
         YelpAPI ya = new YelpAPI();
-        String json = ya.searchByBusinessId(bid);
+        String json = ya.searchByBusinessId(r.getName());
         JSONParser parser = new JSONParser();
         JSONObject bo = null;
         try {
             bo = (JSONObject) parser.parse(json);
+            if(bo.get("distance") != null) {
+                r.setDistance(((Double) bo.get("distance")).intValue());
+            }
             if(bo.get("is_closed") == null){
                 return true;
             } else{
