@@ -9,6 +9,7 @@
         <typeAlias type="model.User" alias="USER"/>
         <typeAlias type="model.GroupUser" alias="GU"/>
         <typeAlias type="model.UserGroup" alias="UG"/>
+        <typeAlias type="model.UserSchool" alias="US"/>
         <typeAlias type="model.Group" alias="GROUP"/>
     </typeAliases>
 
@@ -19,14 +20,14 @@
                 <property name="driver" value="org.postgresql.Driver"/>
                 <property name="url" value="jdbc:postgresql://ambari.cfcktxhbpkfb.us-east-1.rds.amazonaws.com:5432/ambari"/>
                 <property name="username" value="ambari"/>
-                <property name="password" value="adminadmin"/>
+                <property name="password" value="xxx"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
         <mapper resource="school.xml" />
         <mapper resource="group.xml" />
-        <!--<mapper resource="user.xml" />-->
+        <mapper resource="user.xml" />
     </mappers>
 
 </configuration>

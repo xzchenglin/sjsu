@@ -2,6 +2,7 @@ package service;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
+import service.processor.*;
 
 /**
  * Created by Lin Cheng. and modified by Hyunwook Shin
@@ -49,7 +50,7 @@ public class RestService extends CamelService {
         addRoute(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                restConfiguration().component("restlet").host("localhost").port(8272).bindingMode(RestBindingMode.auto);
+                restConfiguration().component("restlet").host("localhost").port(8282).bindingMode(RestBindingMode.auto);
 
                 rest("/twitter").enableCORS(true)
                         .post("/api").to("direct:twitter"); /* hyunwook shin */

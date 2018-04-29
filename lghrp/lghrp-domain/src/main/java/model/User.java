@@ -11,24 +11,33 @@ public class User {
     String name;
     String gender;
     String phone;
+    String externalid;
 
-    List<School> schools;
-    List<Group> groups;
+    List<UserSchool> userSchools;
+    List<UserGroup> userGroups;
 
-    public List<School> getSchools() {
-        return schools;
+    public String getExternalid() {
+        return externalid;
     }
 
-    public void setSchools(List<School> schools) {
-        this.schools = schools;
+    public void setExternalid(String externalid) {
+        this.externalid = externalid;
     }
 
-    public List<Group> getGroups() {
-        return groups;
+    public List<UserSchool> getUserSchools() {
+        return userSchools;
     }
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
+    public void setUserSchools(List<UserSchool> userSchools) {
+        this.userSchools = userSchools;
+    }
+
+    public List<UserGroup> getUserGroups() {
+        return userGroups;
+    }
+
+    public void setUserGroups(List<UserGroup> userGroups) {
+        this.userGroups = userGroups;
     }
 
     public long getId() {

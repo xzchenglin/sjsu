@@ -35,9 +35,9 @@ public class GroupImpl extends BasePOJO implements GroupDao {
     }
 
     @Override
-    public List<Group> list(String cid) throws Exception {
+    public List<Group> list(String sid) throws Exception {
         SqlSession s = client.openSession(true);
-        List<Group> ret = s.selectList("ns.group.list", Long.parseLong(cid));
+        List<Group> ret = s.selectList("ns.group.list", Long.parseLong(sid));
         s.close();
         return ret;
     }

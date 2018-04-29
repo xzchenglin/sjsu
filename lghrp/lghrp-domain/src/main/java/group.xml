@@ -14,12 +14,14 @@
         </association>
         <collection property="groupUsers" ofType="GU">
             <result property="admin" column="admin" />
+            <result property="uid" column="uid" />
             <association property="user" javaType="USER">
                 <id property="id" column="uid"/>
                 <result property="name" column="uname" />
                 <result property="mail" column="mail" />
                 <result property="gender" column="gender" />
                 <result property="phone" column="phone" />
+                <result property="externalid" column="externalid" />
             </association>
         </collection>
     </resultMap>
@@ -29,7 +31,7 @@
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="map">
-        SELECT g.*,gu.*,s.id as sid,s.name as sname,u.id as uid,u.name as uname,u.mail,u.gender,u.phone
+        SELECT g.*,gu.*,s.id as sid,s.name as sname,u.id as uid,u.name as uname,u.mail,u.gender,u.phone,u.externalid
         FROM an_group g left join an_group_user gu on gu.gid=g.id
         left join an_user u on u.id=gu.uid left join an_school s on s.id=g.sid
         WHERE g.id = #{value}

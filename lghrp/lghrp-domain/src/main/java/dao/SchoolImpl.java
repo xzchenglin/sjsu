@@ -55,5 +55,4 @@ public class SchoolImpl extends BasePOJO implements SchoolDao {
         s.delete("ns.school.deleteById", id);
         s.close();
     }
-
 }

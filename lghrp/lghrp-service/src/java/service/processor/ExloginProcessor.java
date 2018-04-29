@@ -11,14 +11,7 @@ public class ExloginProcessor extends PostProcessor {
 
     @Override
     String handle() throws Exception {
-
-        switch (paramMap.get("type")){
-            case "customer":
-                UserDao dao = new UserImpl();
-                return JsonHelper.toJson(dao.createAndGetByExId(JsonHelper.fromJson(body, User.class)));
-            default:
-                return JsonHelper.toJson("Not supported.");
-        }
-
+        UserDao dao = new UserImpl();
+        return JsonHelper.toJson(dao.createAndGetByExId(JsonHelper.fromJson2(body, User.class)));
     }
 }

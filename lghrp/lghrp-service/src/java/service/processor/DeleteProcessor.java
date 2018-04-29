@@ -13,14 +13,14 @@ public class DeleteProcessor extends GetProcessor {
         BaseDao dao;
 
         switch (paramMap.get("type")){
-            case "product":
-                dao = new SchoolImpl();
-                dao.deleteById(paramMap.get("id"));
-                return JsonHelper.toJson("true");
-            case "order":
-                dao = new GroupImpl();
-                dao.deleteById(paramMap.get("id"));
-                return JsonHelper.toJson("true");
+//            case "product":
+//                dao = new SchoolImpl();
+//                dao.deleteById(paramMap.get("id"));
+//                return JsonHelper.toJson("true");
+//            case "order":
+//                dao = new GroupImpl();
+//                dao.deleteById(paramMap.get("id"));
+//                return JsonHelper.toJson("true");
             default:
                 return JsonHelper.toJson("Not supported.");
         }

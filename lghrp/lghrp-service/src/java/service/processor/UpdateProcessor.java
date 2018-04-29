@@ -8,6 +8,7 @@ import dao.SchoolImpl;
 import model.Group;
 import model.School;
 import model.User;
+import model.UserGroup;
 
 /***
  *Created by Lin Cheng
@@ -18,15 +19,18 @@ public class UpdateProcessor extends PostProcessor {
         BaseDao dao;
 
         switch (paramMap.get("type")){
-            case "product":
+            case "school":
                 dao = new SchoolImpl();
                 return JsonHelper.toJson(dao.update(JsonHelper.fromJson(body, School.class)));
-            case "order":
+            case "group":
                 dao = new GroupImpl();
                 return JsonHelper.toJson(dao.update(JsonHelper.fromJson(body, Group.class)));
-            case "customer":
+            case "user":
                 dao = new UserImpl();
                 return JsonHelper.toJson(dao.update(JsonHelper.fromJson(body, User.class)));
+            case "userGroup":
+                dao = new UserImpl();
+                return JsonHelper.toJson(((UserImpl) dao).joinGroup(JsonHelper.fromJson2(body, UserGroup.class)));
             default:
                 return JsonHelper.toJson("Not supported.");
         }

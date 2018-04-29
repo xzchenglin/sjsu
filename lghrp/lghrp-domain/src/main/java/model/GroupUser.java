@@ -3,6 +3,15 @@ package model;
 public class GroupUser {
     User user;
     boolean admin;
+    Long uid;
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
 
     public User getUser() {
         return user;

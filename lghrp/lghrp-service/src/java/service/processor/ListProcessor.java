@@ -2,6 +2,10 @@ package service.processor;
 
 import common.JsonHelper;
 import dao.*;
+import helper.DynamoHelper;
+import model.Post;
+
+import java.util.List;
 
 /***
  *Created by Lin Cheng
@@ -13,15 +17,18 @@ public class ListProcessor extends GetProcessor {
         BaseDao dao;
 
         switch (paramMap.get("type")){
-            case "customer":
+            case "user":
                 dao = new UserImpl();
                 return JsonHelper.toJson(dao.list(null));
-            case "product":
+            case "school":
                 dao = new SchoolImpl();
                 return JsonHelper.toJson(dao.list(paramMap.get("keyword")));
-            case "order":
+            case "group":
                 dao = new GroupImpl();
-                return JsonHelper.toJson(dao.list(paramMap.get("custId")));
+                return JsonHelper.toJson(dao.list(paramMap.get("sid")));
+            case "post":
+                List<Post> ps = DynamoHelper.search(Long.parseLong(paramMap.get("gid")));
+                return JsonHelper.toJson(ps);
             default:
                 return JsonHelper.toJson("Not supported.");
         }

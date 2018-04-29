@@ -5,15 +5,6 @@
 
 <mapper namespace="ns.school">
 
-    <resultMap id="map" type="SCHOOL">
-        <id column="id" property="id"/>
-        <result property="name" column="name" />
-        <collection property="groups" ofType="GROUP">
-            <id column="id" property="id"/>
-            <result property="name" column="name" />
-        </collection>
-    </resultMap>
-
     <select id="list" parameterType="java.lang.String" resultType="SCHOOL">
         SELECT * FROM an_school
         <where>

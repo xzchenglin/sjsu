@@ -3,76 +3,103 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="ns.customer">
+<mapper namespace="ns.user">
 
-    <resultMap id="map" type="CUSTOMER">
-        <id column="customerNumber" property="customerNumber"/>
-        <result property="customerNumber" column="customerNumber" />
-        <result property="customerName" column="customerName" />
-        <result property="contactLastName" column="contactLastName" />
-        <result property="contactFirstName" column="contactFirstName" />
+    <resultMap id="map" type="USER">
+        <id property="id" column="id"/>
+        <result property="mail" column="mail" />
+        <result property="name" column="name" />
+        <result property="gender" column="gender" />
         <result property="phone" column="phone" />
-        <result property="addressLine1" column="addressLine1" />
-        <result property="addressLine2" column="addressLine2" />
-        <result property="city" column="city" />
-        <result property="postalCode" column="postalCode" />
-        <result property="country" column="country" />
-        <result property="state" column="state" />
-        <result property="creditLimit" column="creditLimit" />
-        <result property="externalId" column="externalId" />
-        <collection property="orders" ofType="ORDER">
-            <id column="orderNumber" property="orderNumber"/>
-            <result property="orderDate" column="orderDate" />
-            <result property="requiredDate" column="requiredDate" />
-            <result property="shippedDate" column="shippedDate" />
-            <result property="status" column="status" />
-            <result property="comments" column="comments" />
+        <result property="externalid" column="externalid" />
+        <collection property="userGroups" ofType="UG">
+            <result property="admin" column="admin" />
+            <result property="gid" column="gid" />
+            <association property="group" javaType="GROUP">
+                <id property="id" column="gid"/>
+                <result property="name" column="gname" />
+            </association>
         </collection>
-        <!--<collection property="payments" ofType="PAYMENT">-->
-            <!--<result property="checkNumber" column="checkNumber" />-->
-            <!--<result property="paymentDate" column="paymentDate" />-->
-            <!--<result property="amount" column="amount" />-->
-        <!--</collection>-->
+        <collection property="userSchools" ofType="US">
+            <result property="sid" column="sid" />
+            <result property="year" column="year" />
+            <result property="major" column="major" />
+            <result property="degree" column="degree" />
+            <association property="school" javaType="SCHOOL">
+                <id property="id" column="sid"/>
+                <result property="name" column="sname" />
+            </association>
+        </collection>
     </resultMap>
 
-    <select id="list" resultType="CUSTOMER">
-        SELECT * FROM customers
+    <select id="list" resultType="USER">
+        SELECT * FROM an_user
     </select>
 
-    <select id="getById" parameterType="int" resultMap="map">
-        SELECT * FROM customers c left join orders o ON c.customerNumber=o.customerNumber
-        <!--left join payments p ON c.customerNumber=p.customerNumber -->
-        WHERE c.customerNumber = #{value}
+    <select id="getById" parameterType="java.lang.Long" resultMap="map">
+        SELECT u.*,gu.*,su.*,s.id as sid,s.name as sname,g.id as gid,g.name as gname
+        FROM an_user u left join an_group_user gu on gu.uid=u.id
+        left join an_group g on u.id=gu.uid left join an_school_user su on su.uid=u.id
+        left join an_school s on s.id=su.sid
+        WHERE u.id = #{value}
     </select>
 
-    <select id="getByExid" parameterType="String" resultType="CUSTOMER">
-        SELECT * FROM customers
-        WHERE externalId = #{value}
+    <select id="getByExid" parameterType="String" resultType="USER">
+        SELECT * FROM an_user
+        WHERE externalid = #{value}
     </select>
 
-    <insert id="create" parameterType="CUSTOMER" useGeneratedKeys="true" keyProperty="customerNumber">
-        INSERT INTO customers (customerName,contactLastName,contactFirstName,phone,addressLine1,addressLine2,city,state,postalCode,country,creditLimit,externalId)
-        VALUES(#{customerName},#{contactLastName},#{contactFirstName},#{phone},#{addressLine1},#{addressLine2},#{city},#{state},#{postalCode},#{country},#{creditLimit},#{externalId});
+    <select id="getByMail" parameterType="String" resultType="USER">
+        SELECT * FROM an_user
+        WHERE mail = #{value}
+    </select>
+
+    <insert id="create" parameterType="USER" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            SELECT CAST(nextval('dragon_id_sec') as INTEGER)
+        </selectKey>
+        INSERT INTO an_user (id,mail,name,gender,phone,externalid)
+        VALUES(#{id},#{mail},#{name},#{gender},#{phone},#{externalid});
     </insert>
 
-    <update id="update" parameterType="CUSTOMER">
-        UPDATE customers SET
-        customerName=#{customerName},
-        contactLastName=#{contactLastName},
-        contactFirstName=#{contactFirstName},
-        phone=#{phone},
-        addressLine1=#{addressLine1},
-        addressLine2=#{addressLine2},
-        city=#{city},
-        state=#{state},
-        postalCode=#{postalCode},
-        country=#{country},
-        creditLimit=#{creditLimit}
-        WHERE customerNumber=#{customerNumber}
+    <update id="update" parameterType="USER">
+        UPDATE an_user SET
+        gender=#{gender},
+        mail=#{mail},
+        phone=#{phone}
+        WHERE id=#{id}
     </update>
 
-    <delete id="deleteById" parameterType="int">
-        DELETE FROM customers WHERE customerNumber = #{value}
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM an_user WHERE id = #{value}
     </delete>
+
+    <select id="getSchool" parameterType="US" resultType="SCHOOL">
+        SELECT * FROM an_school_user
+        WHERE sid = #{sid} and uid = #{uid}
+    </select>
+
+    <insert id="addSchool" parameterType="US">
+        INSERT INTO an_school_user (uid,sid,year,major,degree)
+        VALUES(#{uid},#{sid},#{year},#{major},#{degree});
+    </insert>
+
+    <update id="updateSchool" parameterType="US">
+        UPDATE an_school_user SET
+        year=#{year},
+        major=#{major},
+        degree=#{degree}
+        WHERE sid = #{sid} and uid = #{uid}
+    </update>
+
+    <select id="getGroup" parameterType="UG" resultType="GROUP">
+        SELECT * FROM an_group_user
+        WHERE gid = #{gid} and uid = #{uid}
+    </select>
+
+    <insert id="addGroup" parameterType="UG">
+        INSERT INTO an_group_user (uid,gid,admin)
+        VALUES(#{uid},#{gid},#{admin});
+    </insert>
 
 </mapper>

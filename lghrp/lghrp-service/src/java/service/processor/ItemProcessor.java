@@ -2,6 +2,7 @@ package service.processor;
 
 import common.JsonHelper;
 import dao.BaseDao;
+import dao.SchoolImpl;
 import dao.UserImpl;
 import dao.GroupImpl;
 
@@ -14,13 +15,17 @@ public class ItemProcessor extends GetProcessor {
 
         BaseDao dao;
 
+        Long id = Long.parseLong(paramMap.get("id"));
         switch (paramMap.get("type")){
-            case "customer":
+            case "user":
                 dao = new UserImpl();
-                return JsonHelper.toJson(dao.getById(paramMap.get("id")));
-            case "order":
+                return JsonHelper.toJson(dao.getById(id));
+            case "group":
                 dao = new GroupImpl();
-                return JsonHelper.toJson(dao.getById(paramMap.get("id")));
+                return JsonHelper.toJson(dao.getById(id));
+            case "school":
+                dao = new SchoolImpl();
+                return JsonHelper.toJson(dao.getById(id));
             default:
                 return JsonHelper.toJson("Not supported.");
         }
