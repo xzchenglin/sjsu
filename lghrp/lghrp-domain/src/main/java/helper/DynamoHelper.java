@@ -7,9 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.*;
 import common.JsonHelper;
 import model.Post;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class DynamoHelper {
 
@@ -20,12 +18,27 @@ public class DynamoHelper {
     static Table table = dynamoDB.getTable("post");
 
     public static void write(Post post){
+
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        if(post.getComments() != null) {
+            for (Post.Comment c : post.getComments()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("uid", c.getUid());
+                map.put("time", c.getTime());
+                map.put("msg", c.getMsg());
+                list.add(map);
+            }
+        }
+
         Item item = new Item()
                 .withPrimaryKey("gid", post.getGid())
                 .withLong("uid", post.getUid())
                 .withLong("time", post.getTime())
+                .withList("comments", list)
                 .withString("msg", post.getMsg());
 
+        //Automatically do update if pkey+sKey same
         PutItemOutcome outcome = table.putItem(item);
         outcome.getPutItemResult().toString();
     }
