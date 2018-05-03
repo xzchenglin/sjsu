@@ -4,6 +4,8 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import common.JsonHelper;
 import model.Post;
 
@@ -45,7 +47,12 @@ public class DynamoHelper {
 
     public static List<Post> search(Long gid) throws Exception{
 
-        ItemCollection<QueryOutcome> items = table.query("gid", gid);
+        QuerySpec spec = new QuerySpec()
+                .withKeyConditionExpression("gid = :v_id")
+                .withScanIndexForward(false)
+                .withValueMap(new ValueMap()
+                        .withLong(":v_id", gid));
+        ItemCollection<QueryOutcome> items = table.query(spec);
 
         List<Post> ret = new ArrayList<>();
         Iterator<Item> iterator = items.iterator();

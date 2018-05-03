@@ -14,6 +14,8 @@
         <result property="externalid" column="externalid" />
         <collection property="userGroups" ofType="UG">
             <result property="admin" column="admin" />
+
+            <!--to distinguish items-->
             <result property="gid" column="gid" />
             <association property="group" javaType="GROUP">
                 <id property="id" column="gid"/>
@@ -21,7 +23,9 @@
             </association>
         </collection>
         <collection property="userSchools" ofType="US">
+            <!--to distinguish items-->
             <result property="sid" column="sid" />
+
             <result property="year" column="year" />
             <result property="major" column="major" />
             <result property="degree" column="degree" />
