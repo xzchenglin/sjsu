@@ -12,6 +12,6 @@ public class UtilsTest {
 
     @org.junit.Test
     public void enc() throws Exception {
-        System.out.println(Utils.rsaEnc("C0DF2C2CABE44F7F720414E4F09FD624", "/opt/bc/site2.key"));
+        System.out.println(Utils.rsaEnc("E1627CC93AD4268C2D35185BD198D1B9", "/opt/bc/site1.key"));
     }
 }

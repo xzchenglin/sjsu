@@ -6,7 +6,7 @@
 <mapper namespace="ns.item">
 
     <select id="list" parameterType="model.Item" resultType="ITEM">
-        SELECT * FROM bc_item
+        SELECT id,name FROM bc_item
     </select>
 
     <select id="getById" parameterType="java.lang.String" resultType="ITEM">

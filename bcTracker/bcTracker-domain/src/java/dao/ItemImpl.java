@@ -41,6 +41,9 @@ public class ItemImpl extends BasePOJO implements ItemDao {
 
     @Override
     public List<Item> list(String kw) throws Exception {
-        throw new NotImplementedException();
+        SqlSession s = client.openSession(true);
+        List<Item> ret = s.selectList("ns.item.list");
+        s.close();
+        return ret;
     }
 }

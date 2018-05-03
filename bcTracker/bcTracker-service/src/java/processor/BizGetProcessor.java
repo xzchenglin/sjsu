@@ -5,6 +5,7 @@ import dao.ItemImpl;
 import dao.SiteImpl;
 import helper.JSONHelper;
 import bc.Chain;
+import helper.Utils;
 import model.Item;
 import model.Site;
 import org.apache.camel.Exchange;
@@ -59,6 +60,16 @@ public class BizGetProcessor extends GetProcessor {
                 dao = new SiteImpl();
                 List<Site> sites = dao.list(null);
                 return JSONHelper.toJson(sites);
+
+            case "enc":
+                String name = paramMap.get("site");
+                String text = paramMap.get("text");
+                return Utils.rsaEnc(text, "/opt/bc/" + name + ".key");
+
+            case "items":
+                dao = new ItemImpl();
+                List<Item> is = dao.list(null);
+                return JSONHelper.toJson(is);
 
             case "download":
                 String filePath = "/opt/bc/" + paramMap.get("name") + ".key";
