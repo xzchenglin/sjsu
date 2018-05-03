@@ -91,8 +91,16 @@ public class DbTest {
 
     @Test
     public void testDynamo() throws Exception{
-//        Post p = new Post(1L, 2L, System.currentTimeMillis(), "hahaha");
-//        DynamoHelper.write(p);
+        Post p = new Post(1L, 2L, 1524958728440L, "hehehe");
+        List<Post.Comment> cs = new ArrayList<>();
+        Post.Comment c = new Post.Comment(1L, System.currentTimeMillis(), "mmm");
+        Post.Comment c2 = new Post.Comment(1L, System.currentTimeMillis(), "nnn");
+        cs.add(c);
+        cs.add(c2);
+
+        p.setComments(cs);
+
+        DynamoHelper.write(p);
 
         DynamoHelper.search(2L).stream().forEach(System.out::println);
     }

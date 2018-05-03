@@ -1,10 +1,13 @@
 package model;
 
+import java.util.List;
+
 public class Post {
     Long uid;
     Long gid;
     Long time;
     String msg;
+    List<Comment> comments;
 
     public Post() {
     }
@@ -24,6 +27,14 @@ public class Post {
                 ", time=" + time +
                 ", msg='" + msg + '\'' +
                 '}';
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public Long getUid() {
@@ -56,5 +67,32 @@ public class Post {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public static class Comment {
+        Long uid;
+        Long time;
+        String msg;
+
+        public Long getUid() {
+            return uid;
+        }
+
+        public Long getTime() {
+            return time;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public Comment() {
+        }
+
+        public Comment(Long uid, Long time, String msg) {
+            this.uid = uid;
+            this.time = time;
+            this.msg = msg;
+        }
     }
 }
