@@ -6,16 +6,18 @@ public class Post {
     Long uid;
     Long gid;
     Long time;
+    String title;
     String msg;
     List<Comment> comments;
 
     public Post() {
     }
 
-    public Post(Long uid, Long gid, Long time, String msg) {
+    public Post(Long uid, Long gid, Long time, String title, String msg) {
         this.uid = uid;
         this.gid = gid;
         this.time = time;
+        this.title = title;
         this.msg = msg;
     }
 
@@ -67,6 +69,14 @@ public class Post {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public static class Comment {

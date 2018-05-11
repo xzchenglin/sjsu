@@ -5,7 +5,11 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import common.JsonHelper;
 import model.Post;
 
@@ -38,6 +42,7 @@ public class DynamoHelper {
                 .withLong("uid", post.getUid())
                 .withLong("time", post.getTime())
                 .withList("comments", list)
+                .withString("title", post.getTitle())
                 .withString("msg", post.getMsg());
 
         //Automatically do update if pkey+sKey same
@@ -45,7 +50,7 @@ public class DynamoHelper {
         outcome.getPutItemResult().toString();
     }
 
-    public static List<Post> search(Long gid) throws Exception{
+    public static List<Post> retrive(Long gid) throws Exception{
 
         QuerySpec spec = new QuerySpec()
                 .withKeyConditionExpression("gid = :v_id")
@@ -60,6 +65,27 @@ public class DynamoHelper {
         while (iterator.hasNext()) {
             item = iterator.next();
             ret.add(JsonHelper.fromJson2(item.toJSON(), Post.class));
+        }
+        return ret;
+    }
+
+    public static List<Post> search(String txt){
+
+        Map<String, AttributeValue> expressionAttributeValues =
+                new HashMap<>();
+        expressionAttributeValues.put(":v_t", new AttributeValue().withS(txt));
+        expressionAttributeValues.put(":v_m", new AttributeValue().withS(txt));
+
+        ScanSpec scanRequest = new ScanSpec()
+                .withFilterExpression("contains(title, :v_t) or contains(msg, :v_m)")
+                .withValueMap(new ValueMap().withString(":v_t", txt).withString(":v_m", txt));
+
+        ItemCollection<ScanOutcome> items = table.scan(scanRequest);
+
+        Iterator<Item> iterator = items.iterator();
+        List<Post> ret = new ArrayList<>();
+        while (iterator.hasNext()) {
+            ret.add(JsonHelper.fromJson2(iterator.next().toJSON(), Post.class));
         }
         return ret;
     }

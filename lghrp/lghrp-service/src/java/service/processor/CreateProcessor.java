@@ -6,7 +6,6 @@ import dao.UserImpl;
 import dao.GroupImpl;
 import dao.SchoolImpl;
 import helper.DynamoHelper;
-import javafx.geometry.Pos;
 import model.Post;
 import model.User;
 import model.Group;

@@ -5,10 +5,8 @@ import dao.BaseDao;
 import dao.UserImpl;
 import dao.GroupImpl;
 import dao.SchoolImpl;
-import model.Group;
-import model.School;
-import model.User;
-import model.UserGroup;
+import helper.DynamoHelper;
+import model.*;
 
 /***
  *Created by Lin Cheng
@@ -31,6 +29,10 @@ public class UpdateProcessor extends PostProcessor {
             case "userGroup":
                 dao = new UserImpl();
                 return JsonHelper.toJson(((UserImpl) dao).joinGroup(JsonHelper.fromJson2(body, UserGroup.class)));
+            case "post":
+                Post p = JsonHelper.fromJson2(body, Post.class);
+                DynamoHelper.write(p);
+                return body;
             default:
                 return JsonHelper.toJson("Not supported.");
         }

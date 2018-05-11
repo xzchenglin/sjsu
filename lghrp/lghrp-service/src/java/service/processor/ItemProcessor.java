@@ -15,11 +15,18 @@ public class ItemProcessor extends GetProcessor {
 
         BaseDao dao;
 
-        Long id = Long.parseLong(paramMap.get("id"));
+        Long id = null;
+        if(paramMap.get("id") != null){
+            id = Long.parseLong(paramMap.get("id"));
+        }
         switch (paramMap.get("type")){
             case "user":
                 dao = new UserImpl();
-                return JsonHelper.toJson(dao.getById(id));
+                if(id != null) {
+                    return JsonHelper.toJson(dao.getById(id));
+                } else {
+                    return JsonHelper.toJson(((UserImpl) dao).getByFid(paramMap.get("fid")));
+                }
             case "group":
                 dao = new GroupImpl();
                 return JsonHelper.toJson(dao.getById(id));

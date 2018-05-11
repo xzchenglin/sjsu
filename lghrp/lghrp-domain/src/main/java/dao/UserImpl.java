@@ -4,6 +4,7 @@ import model.School;
 import model.User;
 import model.UserGroup;
 import model.UserSchool;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import javax.ws.rs.NotSupportedException;
@@ -95,10 +96,28 @@ public class UserImpl extends BasePOJO implements UserDao {
     }
 
     @Override
+    public User getByFid(String fid) throws Exception {
+
+        SqlSession s = client.openSession(true);
+
+        try {
+            List<User> ret = s.selectList("ns.user.getByFid", fid);
+            if (ret == null || ret.size() == 0) {
+                return null;
+            }
+            return ret.get(0);
+        }
+        finally {
+            s.close();
+        }
+    }
+
+    @Override
     public UserGroup joinGroup(UserGroup ug) {
         SqlSession s = client.openSession(true);
         try {
-            if (s.selectOne("ns.user.getGroup", ug) == null) {
+            List<UserGroup> gs = s.selectList("ns.user.getGroup", ug);
+            if (gs == null || gs.size() == 0) {
                 s.insert("ns.user.addGroup", ug);
             }
             return ug;
@@ -108,9 +127,26 @@ public class UserImpl extends BasePOJO implements UserDao {
     }
 
     @Override
+    public UserGroup exitGroup(UserGroup ug) {
+        SqlSession s = client.openSession(true);
+        try {
+            s.delete("ns.user.delGroup", ug);
+            return ug;
+        } finally {
+            s.close();
+        }
+    }
+
+    @Override
     public List<User> list(String kw) throws Exception {
         SqlSession s = client.openSession(true);
-        List<User> ret = s.selectList("ns.user.list");
+        List<User> ret;
+        if(StringUtils.isBlank(kw)) {
+            ret = s.selectList("ns.user.list");
+        } else {
+            kw = "%" + kw.toLowerCase() + "%";
+            ret = s.selectList("ns.user.list", kw);
+        }
         s.close();
         return ret;
     }

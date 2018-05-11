@@ -19,7 +19,7 @@ public class ListProcessor extends GetProcessor {
         switch (paramMap.get("type")){
             case "user":
                 dao = new UserImpl();
-                return JsonHelper.toJson(dao.list(null));
+                return JsonHelper.toJson(dao.list(paramMap.get("keyword")));
             case "school":
                 dao = new SchoolImpl();
                 return JsonHelper.toJson(dao.list(paramMap.get("keyword")));
@@ -27,7 +27,12 @@ public class ListProcessor extends GetProcessor {
                 dao = new GroupImpl();
                 return JsonHelper.toJson(dao.list(paramMap.get("sid")));
             case "post":
-                List<Post> ps = DynamoHelper.search(Long.parseLong(paramMap.get("gid")));
+                List<Post> ps;
+                if(paramMap.get("gid") != null) {
+                    ps = DynamoHelper.retrive(Long.parseLong(paramMap.get("gid")));
+                } else {
+                    ps = DynamoHelper.search(paramMap.get("keyword"));
+                }
                 return JsonHelper.toJson(ps);
             default:
                 return JsonHelper.toJson("Not supported.");

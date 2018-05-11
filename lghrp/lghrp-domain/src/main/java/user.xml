@@ -12,6 +12,8 @@
         <result property="gender" column="gender" />
         <result property="phone" column="phone" />
         <result property="externalid" column="externalid" />
+        <result property="faceid" column="faceid" />
+        <result property="photourl" column="photourl" />
         <collection property="userGroups" ofType="UG">
             <result property="admin" column="admin" />
 
@@ -38,6 +40,11 @@
 
     <select id="list" resultType="USER">
         SELECT * FROM an_user
+        <where>
+            <if test="value != null">
+                lower(name) like #{value}
+            </if>
+        </where>
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="map">
@@ -53,6 +60,11 @@
         WHERE externalid = #{value}
     </select>
 
+    <select id="getByFid" parameterType="String" resultType="USER">
+        SELECT * FROM an_user
+        WHERE faceid = #{value}
+    </select>
+
     <select id="getByMail" parameterType="String" resultType="USER">
         SELECT * FROM an_user
         WHERE mail = #{value}
@@ -62,8 +74,8 @@
         <selectKey keyProperty="id" resultType="int" order="BEFORE">
             SELECT CAST(nextval('dragon_id_sec') as INTEGER)
         </selectKey>
-        INSERT INTO an_user (id,mail,name,gender,phone,externalid)
-        VALUES(#{id},#{mail},#{name},#{gender},#{phone},#{externalid});
+        INSERT INTO an_user (id,mail,name,gender,phone,externalid,photourl,faceid)
+        VALUES(#{id},#{mail},#{name},#{gender},#{phone},#{externalid},#{photourl},#{faceid});
     </insert>
 
     <update id="update" parameterType="USER">
@@ -104,6 +116,10 @@
     <insert id="addGroup" parameterType="UG">
         INSERT INTO an_group_user (uid,gid,admin)
         VALUES(#{uid},#{gid},#{admin});
+    </insert>
+
+    <insert id="delGroup" parameterType="UG">
+        DELETE from an_group_user where gid=#{gid} and uid=#{uid}
     </insert>
 
 </mapper>

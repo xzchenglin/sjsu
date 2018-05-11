@@ -37,6 +37,8 @@ public class DbTest {
         User o = new User();
         o.setName("uuu");
         o.setExternalid("aaa");
+        o.setPhotourl("ppp");
+        o.setFaceid("fff");
         o.setMail("a@b.com");
         o.setPhone("123");
 
@@ -91,7 +93,7 @@ public class DbTest {
 
     @Test
     public void testDynamo() throws Exception{
-        Post p = new Post(1L, 2L, 1524958728440L, "hehehe");
+        Post p = new Post(1L, 2L, 1524958728440L,"title", "hehehe");
         List<Post.Comment> cs = new ArrayList<>();
         Post.Comment c = new Post.Comment(1L, System.currentTimeMillis(), "mmm");
         Post.Comment c2 = new Post.Comment(1L, System.currentTimeMillis(), "nnn");
@@ -102,7 +104,9 @@ public class DbTest {
 
         DynamoHelper.write(p);
 
-        DynamoHelper.search(2L).stream().forEach(System.out::println);
+        DynamoHelper.retrive(2L).stream().forEach(System.out::println);
+
+        DynamoHelper.search("titl");
     }
 
 }

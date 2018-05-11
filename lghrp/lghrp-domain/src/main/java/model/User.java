@@ -12,6 +12,8 @@ public class User {
     String gender;
     String phone;
     String externalid;
+    String faceid;
+    String photourl;
 
     List<UserSchool> userSchools;
     List<UserGroup> userGroups;
@@ -78,5 +80,21 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getFaceid() {
+        return faceid;
+    }
+
+    public void setFaceid(String faceid) {
+        this.faceid = faceid;
+    }
+
+    public String getPhotourl() {
+        return photourl;
+    }
+
+    public void setPhotourl(String photourl) {
+        this.photourl = photourl;
     }
 }
