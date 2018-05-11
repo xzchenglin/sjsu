@@ -22,6 +22,7 @@
             <association property="group" javaType="GROUP">
                 <id property="id" column="gid"/>
                 <result property="name" column="gname" />
+                <result property="sid" column="sid" />
             </association>
         </collection>
         <collection property="userSchools" ofType="US">
@@ -50,7 +51,7 @@
     <select id="getById" parameterType="java.lang.Long" resultMap="map">
         SELECT u.*,gu.*,su.*,s.id as sid,s.name as sname,g.id as gid,g.name as gname
         FROM an_user u left join an_group_user gu on gu.uid=u.id
-        left join an_group g on u.id=gu.uid left join an_school_user su on su.uid=u.id
+        left join an_group g on g.id=gu.gid left join an_school_user su on su.uid=u.id
         left join an_school s on s.id=su.sid
         WHERE u.id = #{value}
     </select>
