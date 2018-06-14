@@ -24,8 +24,8 @@
             <activeByDefault>true</activeByDefault>
         </activation>
         <modules>
-            <module>lghr-common</module>
-            <module>lghr-quiz</module>
+            <module>lab202-common</module>
+            <module>lab202-common</module>
         </modules>
         <properties>
             <project>all</project>

@@ -9,13 +9,14 @@ public class HasQuarterState implements State {
 		this.gumballMachine = gumballMachine;
 	}
   
-	public void insertQuarter() {
-		System.out.println("You can't insert another quarter");
+	public void insert(GumballMachine.COIN coin) {
+		System.out.println("You can't insert another coin.");
 	}
  
 	public void ejectQuarter() {
-		System.out.println("Quarter returned");
-		gumballMachine.setState(gumballMachine.getNoQuarterState());
+		gumballMachine.setCurrent(0);
+        gumballMachine.setState(gumballMachine.getNoQuarterState());
+        System.out.println(gumballMachine.getCurrent() + " returned");
 	}
  
 	public void turnCrank() {
