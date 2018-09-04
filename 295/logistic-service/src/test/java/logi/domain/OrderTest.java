@@ -163,7 +163,7 @@ public class OrderTest {
 
     @Test
     public void finaOrderByKey() throws Exception {
-        Collection<Order> o = or.findByRaw(Collections.singletonList(new Pair("o.next_pubkey", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuh0v+SnT4VpP0CMVJF/uGvpnbBFiVecqzz/zD0//04xxaum/0hjgqkXVApr6eselKSvkcmBCy+Ql/pZM3QoFesrszMEB3GP9gHfC6DazhbXq10AWLQoKm0p+yjy3PpUAK6U3RLbkhcZSEiJhBT3LeqjnVzMn45hF6X/GCSGYzqncULygo4RRJ+5G9A4IcjOCYSDKmwHXYDXFgnRnNulewfVcUe3EqXMQEirYt5UsLk1KjfQYKubIZY+IslPYj5nKJ60ooBQUU3hu2gBiMIIRCDA9m0B2Md+ab+X38U2YZaa9tzy3U0OWc4h9uqZ3Q4NqH8JHzM7Tk6EdEnILBTOOhwIDAQAB")));
+        Collection<Order> o = or.findByRaw(Collections.singletonList(new Pair("o.next_pubkey", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuh0v+SnT4VpP0CMVJF/uGvpnbBFiVecqzz/zD0//04xxaum/0hjgqkXVApr6eselKSvkcmBCy+Ql/pZM3QoFesrszMEB3GP9gHfC6DazhbXq10AWLQoKm0p+yjy3PpUAK6U3RLbkhcZSEiJhBT3LeqjnVzMn45hF6X/GCSGYzqncULygo4RRJ+5G9A4IcjOCYSDKmwHXYDXFgnRnNulewfVcUe3EqXMQEirYt5UsLk1KjfQYKubIZY+IslPYj5nKJ60ooBQUU3hu2gBiMIIRCDA9m0B2Md+ab+X38U2YZaa9tzy3U0OWc4h9uqZ3Q4NqH8JHzM7Tk6EdEnILBTOOhwIDAQAB")), true);
         o.toString();
     }
 

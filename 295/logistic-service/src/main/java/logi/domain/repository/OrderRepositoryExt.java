@@ -7,5 +7,5 @@ import java.util.Collection;
 import java.util.List;
 
 public interface OrderRepositoryExt {
-    Collection<Order> findByRaw(List<Pair> pairs);
+    Collection<Order> findByRaw(List<Pair> pairs, boolean hash);
 }

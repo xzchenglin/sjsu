@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class OrderRepositoryExtImpl implements OrderRepositoryExt {
@@ -26,7 +27,7 @@ public class OrderRepositoryExtImpl implements OrderRepositoryExt {
     static final Map<String, Integer> sel2IndexMap = new HashMap<>();
 
     @Override
-    public Collection<Order> findByRaw(List<Pair> pairs) {
+    public Collection<Order> findByRaw(List<Pair> pairs, boolean hash) {
 
         String sels = "id,name,state,creation_time,last_modified_time,entity_version,receiver_phone,dest_addr_id,driver_id,receiver_id,sender_id,sender_addr_id,chain,next_pubkey," +
                 "id,name,role,pwd,creation_time,last_modified_time,entity_version,email,phone,pubkey," +
@@ -116,7 +117,11 @@ public class OrderRepositoryExtImpl implements OrderRepositoryExt {
             orderMap.put(id, o);
         }
 
-        return orderMap.values();
+        Collection<Order> ret = orderMap.values();
+        if(hash){
+            ret.stream().map(o -> o.applyHash()).collect(Collectors.toList());
+        }
+        return ret;
     }
 
     private int i4o(String f){

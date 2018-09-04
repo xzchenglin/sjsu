@@ -1,6 +1,7 @@
 package logi.controller;
 
 import javafx.util.Pair;
+import logi.comm.JSONHelper;
 import logi.domain.model.Order;
 import logi.domain.model.User;
 import logi.domain.repository.OrderRepository;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/order")
@@ -51,10 +51,7 @@ public class OrderController {
     @PostMapping(value = "/fetch")
     public Collection<Order> fetch(@RequestBody String body) {
         String pk = body;
-        Collection<Order> orders = or.findByRaw(Collections.singletonList(new Pair("o.next_pubkey", pk)));
-        if(orders != null && orders.size()>0){
-            orders.stream().map(order1 -> order1.applyHash()).collect(Collectors.toList());
-        }
+        Collection<Order> orders = or.findByRaw(Collections.singletonList(new Pair("o.next_pubkey", pk)), true);
         return orders;
     }
 
@@ -66,11 +63,36 @@ public class OrderController {
         return ret;
     }
 
-    @GetMapping("/list")
-    public List<Order> list() {
-        List<Order> is = new ArrayList<>();
-        or.findAll().forEach(is::add);
-        return is;
+    @GetMapping("/item")
+    public Order getById(@RequestParam(value="id") Long id) {
+
+        Order ret = or.findById(id).orElseThrow(() -> new EntityNotFoundException(id + ""));
+        return ret.applyHash();
     }
 
+    @GetMapping("/list")
+    public Collection<Order> list(@RequestParam(value="sid", required=false) Long sid,
+                                  @RequestParam(value="rid", required=false) Long rid,
+                                  @RequestParam(value="did", required=false) Long did) {
+        Collection<Order> ret = new ArrayList<>();
+        List<Pair> pairs = null;
+        if(sid != null){
+            pairs = Collections.singletonList(new Pair("o.sender_id", sid));
+        }
+        if(did != null){
+            pairs = Collections.singletonList(new Pair("o.driver_id", did));
+        }
+        if(rid != null){
+            pairs = Collections.singletonList(new Pair("o.receiver_id", rid));
+        }
+        ret = or.findByRaw(pairs, true);
+        return ret;
+    }
+
+    @PostMapping("/query")
+    public Collection<Order> query(@RequestBody String body) {
+        List<Pair> pairs = JSONHelper.fromJsonForObjList(body, Pair.class);
+        Collection<Order> ret = or.findByRaw(pairs, true);
+        return ret;
+    }
 }
