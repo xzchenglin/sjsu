@@ -69,11 +69,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order handover(Order order) throws Exception {
         Order ex = getExisting(order);
-        User next = ur.findByPubkey(order.getNextPubkey());
+        String key = order.getNextPubkey();
+        User next = ur.findByPubkey(key).orElseThrow(() -> new EntityNotFoundException(key));
         if(next == null){
             throw new RuntimeException("Public key of next user not found.");
         }
-        ex.setDriver(next);
+        ex.setDriver(next.unload());
 
         Chain c = JSONHelper.fromJson2(ex.getChain(), Chain.class);
         Block b = new Block(order.getName(), order.getNextPubkey(), order.getPayload());
@@ -122,7 +123,8 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Failed to verify chain.");
         }
         for(String key : keys){
-            User u = ur.findByPubkey(key);
+            User u = ur.findByPubkey(key).orElseThrow(() -> new EntityNotFoundException(key));
+            u.unload();//unload lazy object which will trigger DB access when implicitly invoking getter by Jackson
             ret.add(u);
         }
 

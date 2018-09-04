@@ -70,6 +70,11 @@ public class User extends VersionedEntity {
         return pubkey;
     }
 
+    public User unload(){
+        addresses = null;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "User{" +

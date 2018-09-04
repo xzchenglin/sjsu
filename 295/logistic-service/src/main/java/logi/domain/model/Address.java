@@ -3,7 +3,6 @@ package logi.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "bc_addr")
@@ -19,7 +18,6 @@ public class Address extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
-    @OneToMany(mappedBy = "senderAddr", fetch = FetchType.LAZY)
 
     @JsonIgnore
     public User getUser() {

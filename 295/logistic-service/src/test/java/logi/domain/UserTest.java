@@ -30,9 +30,9 @@ public class UserTest {
 
     @Test
     public void keyGen() throws Exception {
-        us.user(ur.findByName("aaa")).keygen(User.Role.Driver);
-        us.user(ur.findByName("bbb")).keygen(User.Role.Driver);
-        us.user(ur.findByName("ccc")).keygen(User.Role.Driver);
+        us.user(ur.findByName("aaa").get()).keygen(User.Role.Driver);
+        us.user(ur.findByName("bbb").get()).keygen(User.Role.Driver);
+        us.user(ur.findByName("ccc").get()).keygen(User.Role.Driver);
     }
 
     @Test

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/api/pub")
 public class PubController {
@@ -21,9 +23,8 @@ public class PubController {
 
     @PostMapping("/register")
     public User createNewUser(@RequestBody User user) {
-        if (ur.findByName(user.getName()) != null) {
-            throw new RuntimeException("User is already existing.");
-        }
+        String name = user.getName();
+        ur.findByName(name).orElseThrow(() -> new EntityNotFoundException(name));
         User ret = ur.save(user);
         return ret;
     }

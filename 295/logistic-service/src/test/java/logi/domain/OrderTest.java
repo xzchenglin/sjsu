@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -66,7 +65,7 @@ public class OrderTest {
         a1.setAddr("2222, abc st");
         order.setDestAddr(a1);
 
-        User u = ur.findByName(sender);
+        User u = ur.findByName(sender).get();
 
         //sender's pub key
         order.setNextPubkey(u.getPubkey());
@@ -89,7 +88,7 @@ public class OrderTest {
         Order order = gOrder == null ? or.findById(64L).get().ctx(ctx) : gOrder;
 
         try {
-            order = os.user(ur.findByName(driver1)).take(order);
+            order = os.user(ur.findByName(driver1).get()).take(order);
             System.out.println(order);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +117,7 @@ public class OrderTest {
 
         Order order = gOrder == null ? or.findById(64L).get().ctx(ctx) : gOrder;
 
-        User u = ur.findByName(driver1);
+        User u = ur.findByName(driver1).get();
 
         //driver's pub key
         order.setNextPubkey(u.getPubkey());
@@ -139,7 +138,7 @@ public class OrderTest {
 
         Order order = gOrder == null ? or.findById(64L).get().ctx(ctx) : gOrder;
 
-        User u = ur.findByName(driver2);
+        User u = ur.findByName(driver2).get();
 
         //next driver's pub key
         order.setNextPubkey(u.getPubkey());
