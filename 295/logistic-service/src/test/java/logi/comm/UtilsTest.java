@@ -1,4 +1,4 @@
-import logi.comm.Utils;
+package logi.comm;
 
 import static org.junit.Assert.assertNotNull;
 

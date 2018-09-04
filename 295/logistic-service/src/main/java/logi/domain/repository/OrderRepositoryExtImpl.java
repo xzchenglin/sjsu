@@ -6,9 +6,7 @@ import logi.domain.model.Address;
 import logi.domain.model.Order;
 import logi.domain.model.User;
 import logi.domain.model.state.State;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class OrderRepositoryCustImpl implements OrderRepositoryCust {
+public class OrderRepositoryExtImpl implements OrderRepositoryExt {
 
     @PersistenceContext
     EntityManager em;

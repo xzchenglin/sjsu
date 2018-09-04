@@ -6,6 +6,6 @@ import logi.domain.model.Order;
 import java.util.Collection;
 import java.util.List;
 
-public interface OrderRepositoryCust {
+public interface OrderRepositoryExt {
     Collection<Order> findByRaw(List<Pair> pairs);
 }

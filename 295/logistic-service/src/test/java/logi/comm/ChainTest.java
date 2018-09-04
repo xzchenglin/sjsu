@@ -1,5 +1,5 @@
-import logi.comm.JSONHelper;
-import logi.comm.Utils;
+package logi.comm;
+
 import logi.domain.bc.Block;
 import logi.domain.bc.Chain;
 

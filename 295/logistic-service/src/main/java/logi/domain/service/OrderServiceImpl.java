@@ -9,7 +9,6 @@ import logi.domain.model.User;
 import logi.domain.repository.OrderRepository;
 import logi.domain.repository.UserRepository;
 import org.apache.commons.lang.NotImplementedException;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
