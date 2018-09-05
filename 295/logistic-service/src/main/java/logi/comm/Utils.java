@@ -26,8 +26,15 @@ public class Utils{
         Key pub = kp.getPublic();
         Key pvt = kp.getPrivate();
 
-        writePemFile(pvt, "RSA PRIVATE KEY", "/opt/295/keys/" + name + ".key");
-        writePemFile(pub, "RSA PUBLIC KEY", "/opt/295/keys/" + name + ".pub");
+        String fkey = "/opt/295/keys/" + name + ".key";
+        String fpub = "/opt/295/keys/" + name + ".pub";
+        File file = new File(fkey);
+        if (!file.exists()) {
+            file.getParentFile().mkdir();
+            file.createNewFile();
+        }
+        writePemFile(pvt, "RSA PRIVATE KEY", fkey);
+        writePemFile(pub, "RSA PUBLIC KEY", fpub);
 
         String pubB64 = Base64.getEncoder().encodeToString(pub.getEncoded());
         return pubB64;

@@ -71,9 +71,6 @@ public class OrderServiceImpl implements OrderService {
         Order ex = getExisting(order);
         String key = order.getNextPubkey();
         User next = ur.findByPubkey(key).orElseThrow(() -> new EntityNotFoundException(key));
-        if(next == null){
-            throw new RuntimeException("Public key of next user not found.");
-        }
         ex.setDriver(next.unload());
 
         Chain c = JSONHelper.fromJson2(ex.getChain(), Chain.class);

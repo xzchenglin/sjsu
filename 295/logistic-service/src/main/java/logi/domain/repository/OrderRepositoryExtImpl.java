@@ -119,7 +119,7 @@ public class OrderRepositoryExtImpl implements OrderRepositoryExt {
 
         Collection<Order> ret = orderMap.values();
         if(hash){
-            ret.stream().map(o -> o.applyHash()).collect(Collectors.toList());
+            ret.stream().forEach(o -> o.applyHash());
         }
         return ret;
     }
