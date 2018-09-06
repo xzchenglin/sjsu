@@ -82,6 +82,9 @@ public class Order extends VersionedEntity {
     }
 
     public String getHash() {
+        if(hash == null && chain != null){
+            hash = Utils.md5(JSONHelper.toJson(JSONHelper.fromJson2(chain, Chain.class).getLast()));
+        }
         return hash;
     }
 

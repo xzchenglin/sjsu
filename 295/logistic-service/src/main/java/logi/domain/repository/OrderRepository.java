@@ -1,10 +1,46 @@
 package logi.domain.repository;
 
 import logi.domain.model.Order;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface OrderRepository extends CrudRepository<Order, Long>, OrderRepositoryExt {
+import java.util.Optional;
 
+@Repository
+@CacheConfig(cacheNames = "order")
+public interface OrderRepository extends CrudRepository<Order, Long>, OrderRepositoryExt {
+    @Cacheable
+    @Override
+    Optional<Order> findById(Long aLong);
+
+    @Cacheable
+    @Override
+    Iterable<Order> findAll();
+
+    @Override
+    @CacheEvict
+    <S extends Order> S save(S s);
+
+    @Override
+    @CacheEvict
+    <S extends Order> Iterable<S> saveAll(Iterable<S> iterable);
+
+    @Override
+    @CacheEvict
+    void deleteById(Long aLong);
+
+    @Override
+    @CacheEvict
+    void delete(Order order);
+
+    @Override
+    @CacheEvict
+    void deleteAll(Iterable<? extends Order> iterable);
+
+    @Override
+    @CacheEvict
+    void deleteAll();
 }

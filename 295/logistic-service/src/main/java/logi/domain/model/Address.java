@@ -20,6 +20,7 @@ public class Address extends BaseEntity {
     private User user;
 
     @JsonIgnore
+    @org.codehaus.jackson.annotate.JsonIgnore
     public User getUser() {
         return user;
     }

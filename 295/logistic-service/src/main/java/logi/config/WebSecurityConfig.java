@@ -1,4 +1,4 @@
-package logi;
+package logi.config;
 
 import logi.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

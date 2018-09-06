@@ -1,10 +1,10 @@
-package logi.domain;
+package logi.service;
 
 import logi.domain.model.Address;
 import logi.domain.model.User;
 import logi.domain.repository.AddressRepository;
 import logi.domain.repository.UserRepository;
-import logi.domain.service.UserService;
+import logi.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class UserTest {
     @Test
     public void addUser() throws Exception {
         User u = new User();
-        u.setName("ccc");
+        u.setName("ddd");
         u.setPwd("ppp");
 
         Address a2 = new Address();

@@ -1,4 +1,4 @@
-package logi.domain.service;
+package logi.service;
 
 import logi.domain.model.Order;
 import logi.domain.model.User;
@@ -24,7 +24,7 @@ public interface OrderService {
     /*
     driver deliver the item
      */
-    Order deliver(Order order);
+    Order deliver(Order order, String code);
 
     /*
     sender/driver cancel the order

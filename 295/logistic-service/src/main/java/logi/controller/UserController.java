@@ -2,7 +2,7 @@ package logi.controller;
 
 import logi.domain.model.User;
 import logi.domain.repository.UserRepository;
-import logi.domain.service.UserService;
+import logi.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

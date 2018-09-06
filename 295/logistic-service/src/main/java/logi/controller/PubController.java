@@ -24,7 +24,9 @@ public class PubController {
     @PostMapping("/register")
     public User createNewUser(@RequestBody User user) {
         String name = user.getName();
-        ur.findByName(name).orElseThrow(() -> new EntityNotFoundException(name));
+        if (ur.findByName(user.getName()).isPresent()) {
+            throw new RuntimeException("User is already existing.");
+        }
         User ret = ur.save(user);
         return ret;
     }

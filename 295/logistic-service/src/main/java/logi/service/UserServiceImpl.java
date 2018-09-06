@@ -1,4 +1,4 @@
-package logi.domain.service;
+package logi.service;
 
 import logi.comm.Utils;
 import logi.domain.model.User;
@@ -29,7 +29,8 @@ public class UserServiceImpl implements UserService {
     public User keygen(User.Role role) throws Exception {
 
         if(SecurityContextHolder.getContext().getAuthentication() != null) {
-            currentUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            currentUser = ur.findByName(SecurityContextHolder.getContext().getAuthentication().getName())
+                    .orElseThrow(() -> new RuntimeException("Invalid user."));
         }
 
         String pk = Utils.generateKeypair(currentUser.getName());

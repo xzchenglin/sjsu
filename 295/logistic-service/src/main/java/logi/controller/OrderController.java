@@ -5,7 +5,7 @@ import logi.comm.JSONHelper;
 import logi.domain.model.Order;
 import logi.domain.model.User;
 import logi.domain.repository.OrderRepository;
-import logi.domain.service.OrderService;
+import logi.service.OrderService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,22 +30,22 @@ public class OrderController {
 
     @PostMapping(value = "/place")
     public Order register(@RequestBody Order order) throws Exception {
-        return os.place(order);
+        return os.place(order).applyHash();
     }
 
     @PostMapping(value = "/take")
     public Order take(@RequestBody Order order) throws Exception {
-        return os.take(order);
+        return os.take(order).applyHash();
     }
 
     @PostMapping(value = "/pick")
     public Order pick(@RequestBody Order order) throws Exception {
-        return os.handover(order);
+        return os.handover(order).applyHash();
     }
 
     @PostMapping(value = "/deliver")
-    public Order deliver(@RequestBody Order order) throws Exception {
-        return os.deliver(order);
+    public Order deliver(@RequestBody Order order, @RequestParam(value="code") String code) throws Exception {
+        return os.deliver(order, code).applyHash();
     }
 
     @PostMapping(value = "/fetch")

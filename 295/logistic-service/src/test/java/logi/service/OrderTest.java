@@ -1,4 +1,4 @@
-package logi.domain;
+package logi.service;
 
 import javafx.util.Pair;
 import logi.comm.Utils;
@@ -8,7 +8,6 @@ import logi.domain.model.User;
 import logi.domain.repository.AddressRepository;
 import logi.domain.repository.OrderRepository;
 import logi.domain.repository.UserRepository;
-import logi.domain.service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,8 @@ public class OrderTest {
     @Test
     public void end2endOrder() throws Exception {
         placeOrder();
-        takeOrder();//take the order online
-        pickOrder();//pickup the item
+        takeOrder();//driver take the order online
+        pickOrder();//give the item to driver
         pickOrder2();//hand to next driver
         deliverOrder();
 
@@ -103,7 +102,7 @@ public class OrderTest {
         Order order = gOrder == null ? or.findById(64L).get().ctx(ctx) : gOrder;
 
         try {
-            order = os.deliver(order);
+            order = os.deliver(order, "");
             System.out.println(order);
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,6 +164,5 @@ public class OrderTest {
         Collection<Order> o = or.findByRaw(Collections.singletonList(new Pair("o.next_pubkey", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuh0v+SnT4VpP0CMVJF/uGvpnbBFiVecqzz/zD0//04xxaum/0hjgqkXVApr6eselKSvkcmBCy+Ql/pZM3QoFesrszMEB3GP9gHfC6DazhbXq10AWLQoKm0p+yjy3PpUAK6U3RLbkhcZSEiJhBT3LeqjnVzMn45hF6X/GCSGYzqncULygo4RRJ+5G9A4IcjOCYSDKmwHXYDXFgnRnNulewfVcUe3EqXMQEirYt5UsLk1KjfQYKubIZY+IslPYj5nKJ60ooBQUU3hu2gBiMIIRCDA9m0B2Md+ab+X38U2YZaa9tzy3U0OWc4h9uqZ3Q4NqH8JHzM7Tk6EdEnILBTOOhwIDAQAB")), true);
         o.toString();
     }
-
 
 }

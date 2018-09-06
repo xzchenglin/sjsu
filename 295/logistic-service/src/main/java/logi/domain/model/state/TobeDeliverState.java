@@ -13,9 +13,10 @@ public class TobeDeliverState extends OrderState {
 
     @Override
     public void deliver(Order order) {
-        order.setState(State.Success);
+        //TODO verify access code
+        //TODO finish payment
 
-        //TODO trigger payment
+        order.setState(State.Success);
     }
 
     @Override

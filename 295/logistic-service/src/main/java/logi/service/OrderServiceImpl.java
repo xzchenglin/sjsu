@@ -1,4 +1,4 @@
-package logi.domain.service;
+package logi.service;
 
 import logi.Application;
 import logi.comm.JSONHelper;
@@ -12,6 +12,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class OrderServiceImpl implements OrderService {
     public Order place(Order order) throws Exception {
 
         if(SecurityContextHolder.getContext().getAuthentication() != null) {
-            currentUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            currentUser = ur.findByName(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new RuntimeException("Invalid user."));
         }
         order.setSender(currentUser);
 
@@ -49,21 +51,22 @@ public class OrderServiceImpl implements OrderService {
         order.place();
         order = or.save(order);
 
-        return order.applyHash();
+        return order;
     }
 
     @Override
     public Order take(Order order) {
         Order ex = getExisting(order);
         if(SecurityContextHolder.getContext().getAuthentication() != null) {
-            currentUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            currentUser = ur.findByName(SecurityContextHolder.getContext().getAuthentication().getName())
+                    .orElseThrow(() -> new RuntimeException("Invalid user."));
         }
         ex.setDriver(currentUser);
 
         ex.take();
         order = or.save(ex);
 
-        return order.applyHash();
+        return order;
     }
 
     @Override
@@ -81,16 +84,17 @@ public class OrderServiceImpl implements OrderService {
         ex.pick();
         order = or.save(ex);
 
-        return order.applyHash();
+        return order;
     }
 
     @Override
-    public Order deliver(Order order) {
+    @Transactional
+    public Order deliver(Order order, String code) {
         Order ex = getExisting(order);
         ex.deliver();
         order = or.save(ex);
 
-        return order.applyHash();
+        return order;
     }
 
     @Override
@@ -99,11 +103,13 @@ public class OrderServiceImpl implements OrderService {
         ex.cancel();
         order = or.save(ex);
 
-        return order.applyHash();
+        return order;
     }
 
     @Override
     public Order fail(Order order) {
+        //TODO revert payment
+
         throw new NotImplementedException();
     }
 
