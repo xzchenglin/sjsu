@@ -17,19 +17,11 @@ public interface AddressRepository extends CrudRepository<Address, Long> {
     Optional<Address> findById(Long aLong);
 
     @Override
-    @Cacheable
-    Iterable<Address> findAll();
-
-    @Override
-    @Cacheable
-    Iterable<Address> findAllById(Iterable<Long> iterable);
-
-    @Override
-    @CacheEvict
+    @CacheEvict(key = "#p0.id")
     <S extends Address> S save(S s);
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     <S extends Address> Iterable<S> saveAll(Iterable<S> iterable);
 
     @Override
@@ -37,14 +29,14 @@ public interface AddressRepository extends CrudRepository<Address, Long> {
     void deleteById(Long aLong);
 
     @Override
-    @CacheEvict
+    @CacheEvict(key = "#p0.id")
     void delete(Address address);
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     void deleteAll(Iterable<? extends Address> iterable);
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     void deleteAll();
 }

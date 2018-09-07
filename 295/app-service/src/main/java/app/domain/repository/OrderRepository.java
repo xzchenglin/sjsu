@@ -16,16 +16,12 @@ public interface OrderRepository extends CrudRepository<Order, Long>, OrderRepos
     @Override
     Optional<Order> findById(Long aLong);
 
-    @Cacheable
-    @Override
-    Iterable<Order> findAll();
-
     @Override
     @CacheEvict(key = "#p0.id")
     <S extends Order> S save(S s);
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     <S extends Order> Iterable<S> saveAll(Iterable<S> iterable);
 
     @Override
@@ -33,14 +29,14 @@ public interface OrderRepository extends CrudRepository<Order, Long>, OrderRepos
     void deleteById(Long aLong);
 
     @Override
-    @CacheEvict
+    @CacheEvict(key = "#p0.id")
     void delete(Order order);
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     void deleteAll(Iterable<? extends Order> iterable);
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     void deleteAll();
 }

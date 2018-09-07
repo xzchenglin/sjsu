@@ -32,21 +32,16 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Cacheable
     Optional<User> findByName(@Param("name") String name);
 
-    @Cacheable
     @Query("SELECT u FROM User u LEFT JOIN fetch u.addresses")
     List<User> findAllEager();
 
     @Cacheable
-    @Override
-    Iterable<User> findAll();
-
-    @Cacheable
+    @Transactional
     @Query("SELECT u FROM User u LEFT JOIN fetch u.addresses WHERE u.pubkey = (:pubkey)")
     Optional<User> findByPubkeyEager(@Param("pubkey") String pubkey);
 
     @Cacheable
     @Transactional
-//    @Cacheable(key = "#p0")
     Optional<User> findByPubkey(@Param("pubkey") String pubkey);
 
     @Caching(evict = {
@@ -57,7 +52,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     <S extends User> S save(S s);
 
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Override
     <S extends User> Iterable<S> saveAll(Iterable<S> iterable);
 
@@ -65,15 +60,19 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     void deleteById(Long aLong);
 
-    @CacheEvict
+    @Caching(evict = {
+            @CacheEvict(key = "#p0.pubkey"),
+            @CacheEvict(key = "#p0.id"),
+            @CacheEvict(key = "#p0.name")
+    } )
     @Override
     void delete(User user);
 
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Override
     void deleteAll(Iterable<? extends User> iterable);
 
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Override
     void deleteAll();
 }

@@ -11,6 +11,6 @@ import java.util.List;
 @CacheConfig(cacheNames = "order")
 public interface OrderRepositoryExt {
 
-    @Cacheable
+//    @Cacheable
     Collection<Order> findByRaw(List<Pair> pairs, boolean hash);
 }

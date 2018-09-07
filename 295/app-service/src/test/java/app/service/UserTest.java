@@ -54,8 +54,14 @@ public class UserTest {
     }
 
     @Test
-    public void finaUser() throws Exception {
+    public void findUser() throws Exception {
         User u = ur.findById(86L).get();
         u.toString();
+    }
+
+    @Test
+    public void findAll() throws Exception {
+        List<User> us = ur.findAllEager();
+        us.stream().forEach(System.out::println);
     }
 }
