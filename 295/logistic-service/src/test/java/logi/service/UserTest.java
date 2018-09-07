@@ -4,7 +4,6 @@ import logi.domain.model.Address;
 import logi.domain.model.User;
 import logi.domain.repository.AddressRepository;
 import logi.domain.repository.UserRepository;
-import logi.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,9 @@ public class UserTest {
 
     @Test
     public void keyGen() throws Exception {
-        us.user(ur.findByName("aaa").get()).keygen(User.Role.Driver);
-        us.user(ur.findByName("bbb").get()).keygen(User.Role.Driver);
-        us.user(ur.findByName("ccc").get()).keygen(User.Role.Driver);
+        us.fakeUser(ur.findByName("aaa").get()).keygen(User.Role.Driver);
+//        us.user(ur.findByName("bbb").get()).keygen(User.Role.Driver);
+//        us.user(ur.findByName("ccc").get()).keygen(User.Role.Driver);
     }
 
     @Test

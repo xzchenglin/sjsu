@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new InMemoryUserDetailsManager(
                 users.stream().map(
                         u -> User.withUsername(u.getName())
-                                .password(u.getPwd())
+                                .password(u.getPwdEnc())
                                 .roles(u.getRole() + "")
                                 .build())
                         .collect(Collectors.toList()));

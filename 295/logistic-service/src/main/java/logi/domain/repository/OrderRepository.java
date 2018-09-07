@@ -21,7 +21,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>, OrderRepos
     Iterable<Order> findAll();
 
     @Override
-    @CacheEvict
+    @CacheEvict(key = "#p0.id")
     <S extends Order> S save(S s);
 
     @Override

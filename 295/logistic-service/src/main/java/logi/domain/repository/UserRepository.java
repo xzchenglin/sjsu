@@ -4,6 +4,7 @@ import logi.domain.model.User;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -46,8 +47,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
 //    @Cacheable(key = "#p0")
     Optional<User> findByPubkey(@Param("pubkey") String pubkey);
 
-    @CacheEvict
-//    @CacheEvict(key = "#p0?.pubkey")
+    @Caching(evict = {
+        @CacheEvict(key = "#p0.pubkey"),
+        @CacheEvict(key = "#p0.id"),
+        @CacheEvict(key = "#p0.name")
+    } )
     @Override
     <S extends User> S save(S s);
 

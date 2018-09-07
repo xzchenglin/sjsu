@@ -1,5 +1,8 @@
 package logi.domain.model;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,10 +10,18 @@ import java.util.List;
 @Table(name = "bc_user")
 public class User extends VersionedEntity {
 
+    @Transient
+    static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     String name;
     @Enumerated(EnumType.STRING)
     Role role = Role.User;
+
+    @Transient
     String pwd;
+    @Column(name = "pwd")
+    String pwdEnc;
+
     String phone;
     String email;
     @Column(length = 65536)
@@ -40,6 +51,14 @@ public class User extends VersionedEntity {
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    public String getPwdEnc() {
+        return pwdEnc;
+    }
+
+    public void setPwdEnc(String pwdEnc) {
+        this.pwdEnc = pwdEnc;
     }
 
     public String getPhone() {
@@ -92,5 +111,13 @@ public class User extends VersionedEntity {
     public enum Role{
         User,
         Driver
+    }
+
+    @PreUpdate
+    @PrePersist
+    public void beforeUpdate() {
+        if(StringUtils.isNotBlank(pwd)) {
+            pwdEnc = bCryptPasswordEncoder.encode(pwd);
+        }
     }
 }

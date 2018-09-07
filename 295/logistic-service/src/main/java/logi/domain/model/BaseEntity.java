@@ -1,9 +1,10 @@
 package logi.domain.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "bcSeq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "bcSeq", sequenceName = "bc_id_seq")

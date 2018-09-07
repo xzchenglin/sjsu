@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     //for unit testing
     private User currentUser;
-    public UserServiceImpl user(User currentUser) {
+    public UserServiceImpl fakeUser(User currentUser) {
         this.currentUser = currentUser;
         return this;
     }
